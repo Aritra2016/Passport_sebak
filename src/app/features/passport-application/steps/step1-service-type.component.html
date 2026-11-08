@@ -35,7 +35,8 @@
     <div class="section-group" *ngIf="form.get('applicationType')?.value === 'REISSUE'">
       <label class="section-title" for="reissueReason">Reason for Re-issue <span class="req">*</span></label>
         <select id="reissueReason" formControlName="reissueReason" class="form-control"
-          (change)="onInputChange($event, 'reissueReason')">
+          (change)="onInputChange($event, 'reissueReason')"
+          (keyup)="onInputChange($event, 'reissueReason')">
           <option value="">-- Select Re-issue Reason --</option>
           <option value="Validity Expired within 3 years">Validity Expired within 3 years</option>
           <option value="Validity Expired more than 3 years ago">Validity Expired more than 3 years ago</option>

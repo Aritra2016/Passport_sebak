@@ -18,7 +18,9 @@
                 class="form-control" 
                 [(ngModel)]="searchArn" 
                 appUpperCase 
-                placeholder="e.g. ARN-DL01-84920194-2026">
+                placeholder="e.g. ARN-DL01-84920194-2026"
+                (input)="onInputChange($event, 'trackArn')"
+                (keyup)="onInputChange($event, 'trackArn')">
             </div>
 
             <div class="input-group">
@@ -27,7 +29,10 @@
                 id="trackDob"
                 type="date" 
                 class="form-control" 
-                [(ngModel)]="searchDob">
+                [(ngModel)]="searchDob"
+                (input)="onInputChange($event, 'trackDob')"
+                (keyup)="onInputChange($event, 'trackDob')"
+                (change)="onInputChange($event, 'trackDob')">
             </div>
 
             <div class="btn-group">

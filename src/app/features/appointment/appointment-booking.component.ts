@@ -28,6 +28,16 @@ export class AppointmentBookingComponent implements OnInit {
   selectedDistrict = 'ALL';
   selectedCenterType = 'ALL';
 
+  onInputChange(event: any, fieldName?: string): void {
+    const val = event?.target ? event.target.value : event;
+    const key = event?.key;
+    if (key) {
+      console.warn(`[Keyboard Event: keyup] Field: "${fieldName}", Key Pressed: "${key}", Current Value:`, [val]);
+    } else {
+      console.warn(`[Input Event] Field: "${fieldName}", Current Value:`, [val]);
+    }
+  }
+
   allKendras: PskLocation[] = [
     {
       id: 'PSK-DEL-01',

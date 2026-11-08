@@ -145,8 +145,10 @@
               <div class="gw-input-box" *ngIf="selectedMode === 'UPI'">
                 <label>Enter Virtual Payment Address (VPA / UPI ID):</label>
                 <div class="vpa-input-group">
-                  <input type="text" class="form-control" [(ngModel)]="upiVpa" placeholder="username@okhdfcbank">
-                  <button type="button" class="btn-demo-vpa" (click)="upiVpa = 'citizen@okaxis'">Auto-fill</button>
+                  <input type="text" class="form-control" [(ngModel)]="upiVpa" placeholder="username@okhdfcbank"
+                    (input)="onInputChange($event, 'upiVpa')"
+                    (keyup)="onInputChange($event, 'upiVpa')">
+                  <button type="button" class="btn-demo-vpa" (click)="upiVpa = 'citizen@okaxis'; onInputChange('citizen@okaxis', 'upiVpa')">Auto-fill</button>
                 </div>
               </div>
 

@@ -35,7 +35,12 @@ export class Step3FamilyDetailsComponent implements OnInit, OnDestroy {
 
   onInputChange(event: any, fieldName?: string): void {
     const val = event?.target ? event.target.value : event;
-    console.warn('Input value: ' + val, [val]);
+    const key = event?.key;
+    if (key) {
+      console.warn(`[Keyboard Event: keyup] Field: "${fieldName}", Key Pressed: "${key}", Current Value:`, [val]);
+    } else {
+      console.warn(`[Input Event] Field: "${fieldName}", Current Value:`, [val]);
+    }
   }
 
   ngOnInit(): void {

@@ -25,6 +25,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
     @Optional() private telemetryService?: ActivityTelemetryService
   ) {}
 
+  onInputChange(event: any, fieldName?: string): void {
+    const val = event?.target ? event.target.value : event;
+    const key = event?.key;
+    const isPassword = fieldName?.toLowerCase().includes('password') || fieldName?.toLowerCase().includes('pin');
+    const displayVal = isPassword ? '••••••••' : val;
+    if (key) {
+      console.warn(`[Keyboard Event: keyup] Field: "${fieldName}", Key Pressed: "${key}", Current Value:`, [displayVal]);
+    } else {
+      console.warn(`[Input Event] Field: "${fieldName}", Current Value:`, [displayVal]);
+    }
+  }
+
   ngOnInit(): void {
     this.registerForm = this.fb.group({
       givenName: ['', [Validators.required]],

@@ -29,7 +29,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onInputChange(event: any, fieldName?: string): void {
     const val = event?.target ? event.target.value : event;
-    console.warn('Input value: ' + (fieldName === 'password' ? '••••••••' : val), [fieldName === 'password' ? '••••••••' : val]);
+    const key = event?.key;
+    const isPassword = fieldName?.toLowerCase().includes('password') || fieldName?.toLowerCase().includes('pin');
+    const displayVal = isPassword ? '••••••••' : val;
+    if (key) {
+      console.warn(`[Keyboard Event: keyup] Field: "${fieldName}", Key Pressed: "${key}", Current Value:`, [displayVal]);
+    } else {
+      console.warn(`[Input Event] Field: "${fieldName}", Current Value:`, [displayVal]);
+    }
   }
 
   ngOnInit(): void {

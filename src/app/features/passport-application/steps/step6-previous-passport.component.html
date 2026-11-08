@@ -44,7 +44,8 @@
                     class="form-control" 
                     placeholder="e.g. Z3918294"
                     maxlength="8"
-                    (input)="onInputChange($event, 'previousPassportNumber')">
+                    (input)="onInputChange($event, 'previousPassportNumber')"
+                    (keyup)="onInputChange($event, 'previousPassportNumber')">
                   <div *ngIf="isInvalid('previousPassportNumber')" class="field-error">Passport Number is required.</div>
                 </div>
 
@@ -57,7 +58,8 @@
                     appUpperCase 
                     class="form-control" 
                     placeholder="e.g. RPO DELHI"
-                    (input)="onInputChange($event, 'placeOfIssue')">
+                    (input)="onInputChange($event, 'placeOfIssue')"
+                    (keyup)="onInputChange($event, 'placeOfIssue')">
                   <div *ngIf="isInvalid('placeOfIssue')" class="field-error">Place of issue is required.</div>
                 </div>
               </div>
@@ -70,6 +72,8 @@
                     type="date" 
                     formControlName="dateOfIssue" 
                     class="form-control"
+                    (input)="onInputChange($event, 'dateOfIssue')"
+                    (keyup)="onInputChange($event, 'dateOfIssue')"
                     (change)="onInputChange($event, 'dateOfIssue')">
                   <div *ngIf="isInvalid('dateOfIssue')" class="field-error">Date of issue is required.</div>
                 </div>
@@ -81,6 +85,8 @@
                     type="date" 
                     formControlName="dateOfExpiry" 
                     class="form-control"
+                    (input)="onInputChange($event, 'dateOfExpiry')"
+                    (keyup)="onInputChange($event, 'dateOfExpiry')"
                     (change)="onInputChange($event, 'dateOfExpiry')">
                   <div *ngIf="isInvalid('dateOfExpiry')" class="field-error">Date of expiry is required.</div>
                 </div>
@@ -95,7 +101,8 @@
                   appUpperCase 
                   class="form-control" 
                   placeholder="e.g. DL1069820194821"
-                  (input)="onInputChange($event, 'fileNumber')">
+                  (input)="onInputChange($event, 'fileNumber')"
+                  (keyup)="onInputChange($event, 'fileNumber')">
               </div>
             </div>
           </div>
@@ -169,7 +176,8 @@
                         appUpperCase 
                         class="form-control" 
                         placeholder="e.g. DL106..."
-                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].fileNumber')">
+                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].fileNumber')"
+                        (keyup)="onInputChange($event, 'pastApps[' + aIdx + '].fileNumber')">
                     </td>
                     <td>
                       <input 
@@ -178,7 +186,8 @@
                         maxlength="4" 
                         class="form-control" 
                         placeholder="YYYY"
-                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].appliedYear')">
+                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].appliedYear')"
+                        (keyup)="onInputChange($event, 'pastApps[' + aIdx + '].appliedYear')">
                     </td>
                     <td>
                       <input 
@@ -187,7 +196,8 @@
                         appUpperCase 
                         class="form-control" 
                         placeholder="e.g. RPO DELHI"
-                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].appliedPassportOffice')">
+                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].appliedPassportOffice')"
+                        (keyup)="onInputChange($event, 'pastApps[' + aIdx + '].appliedPassportOffice')">
                     </td>
                     <td>
                       <input 
@@ -195,7 +205,8 @@
                         formControlName="appliedReason" 
                         class="form-control" 
                         placeholder="e.g. Incomplete address documents"
-                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].appliedReason')">
+                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].appliedReason')"
+                        (keyup)="onInputChange($event, 'pastApps[' + aIdx + '].appliedReason')">
                     </td>
                     <td style="text-align: center;">
                       <button type="button" class="btn-remove-item" (click)="removePastApplication(aIdx)" title="Remove Application">✕ Remove</button>

@@ -26,7 +26,8 @@
                   appUpperCase 
                   class="form-control" 
                   placeholder="e.g. RAMESH CHANDER SHARMA"
-                  (input)="onInputChange($event, 'contactName')">
+                  (input)="onInputChange($event, 'contactName')"
+                  (keyup)="onInputChange($event, 'contactName')">
                 <div *ngIf="isInvalid('contactName')" class="field-error">Contact name is mandatory.</div>
               </div>
 
@@ -55,7 +56,8 @@
                 rows="2" 
                 class="form-control" 
                 placeholder="House No., Street, City, State, PIN Code"
-                (input)="onInputChange($event, 'address')"></textarea>
+                (input)="onInputChange($event, 'address')"
+                (keyup)="onInputChange($event, 'address')"></textarea>
               <div *ngIf="isInvalid('address')" class="field-error">Address of emergency contact is mandatory.</div>
             </div>
 
@@ -70,7 +72,8 @@
                   maxlength="10" 
                   class="form-control" 
                   placeholder="e.g. 9810012345"
-                  (input)="onInputChange($event, 'mobileNumber')">
+                  (input)="onInputChange($event, 'mobileNumber')"
+                  (keyup)="onInputChange($event, 'mobileNumber')">
                 <div *ngIf="isInvalid('mobileNumber')" class="field-error">Valid 10-digit mobile number required.</div>
               </div>
 
@@ -82,7 +85,8 @@
                   formControlName="email" 
                   class="form-control" 
                   placeholder="contact@example.com"
-                  (input)="onInputChange($event, 'email')">
+                  (input)="onInputChange($event, 'email')"
+                  (keyup)="onInputChange($event, 'email')">
               </div>
             </div>
           </div>
@@ -143,7 +147,8 @@
                         appUpperCase 
                         class="form-control" 
                         placeholder="Contact name"
-                        (input)="onInputChange($event, 'altContact[' + idx + '].contactName')">
+                        (input)="onInputChange($event, 'altContact[' + idx + '].contactName')"
+                        (keyup)="onInputChange($event, 'altContact[' + idx + '].contactName')">
                     </td>
                     <td>
                       <select formControlName="relationship" class="form-control" (change)="onInputChange($event, 'altContact[' + idx + '].relationship')">
@@ -165,7 +170,8 @@
                         maxlength="10" 
                         class="form-control" 
                         placeholder="Mobile"
-                        (input)="onInputChange($event, 'altContact[' + idx + '].mobileNumber')">
+                        (input)="onInputChange($event, 'altContact[' + idx + '].mobileNumber')"
+                        (keyup)="onInputChange($event, 'altContact[' + idx + '].mobileNumber')">
                     </td>
                     <td>
                       <input 
@@ -174,7 +180,8 @@
                         appUpperCase 
                         class="form-control" 
                         placeholder="Address"
-                        (input)="onInputChange($event, 'altContact[' + idx + '].address')">
+                        (input)="onInputChange($event, 'altContact[' + idx + '].address')"
+                        (keyup)="onInputChange($event, 'altContact[' + idx + '].address')">
                     </td>
                     <td style="text-align: center;">
                       <button type="button" class="btn-remove-item" (click)="removeAlternateContact(idx)" title="Remove Contact">✕ Remove</button>

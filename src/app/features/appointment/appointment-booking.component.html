@@ -11,7 +11,7 @@
         <div class="arn-info-strip">
           <div class="arn-detail">
             <span class="label">Booking for Application:</span>
-            <select class="arn-dropdown" [ngModel]="selectedArn" (ngModelChange)="onArnChange($event)">
+            <select class="arn-dropdown" [ngModel]="selectedArn" (ngModelChange)="onArnChange($event); onInputChange($event, 'selectedArn')" (keyup)="onInputChange($event, 'selectedArn')">
               <option *ngFor="let a of stateService.applications()" [value]="a.arn">
                 {{ a.arn }} - {{ a.personalDetails.givenName }} {{ a.personalDetails.surname }} ({{ a.serviceType.schemeType }})
               </option>
@@ -52,7 +52,7 @@
           <div class="filters-grid">
             <div class="filter-group">
               <label for="filterState">State / Union Territory</label>
-              <select id="filterState" class="form-control" [(ngModel)]="selectedState" (change)="onFilterChange()">
+              <select id="filterState" class="form-control" [(ngModel)]="selectedState" (change)="onFilterChange(); onInputChange($event, 'filterState')" (keyup)="onInputChange($event, 'filterState')">
                 <option value="DELHI">Delhi</option>
                 <option value="MAHARASHTRA">Maharashtra</option>
                 <option value="KARNATAKA">Karnataka</option>
@@ -64,7 +64,7 @@
 
             <div class="filter-group">
               <label for="filterDistrict">District / City</label>
-              <select id="filterDistrict" class="form-control" [(ngModel)]="selectedDistrict" (change)="onFilterChange()">
+              <select id="filterDistrict" class="form-control" [(ngModel)]="selectedDistrict" (change)="onFilterChange(); onInputChange($event, 'filterDistrict')" (keyup)="onInputChange($event, 'filterDistrict')">
                 <option value="ALL">All Districts / Kendras</option>
                 <option *ngFor="let dist of availableDistricts" [value]="dist">{{ dist }}</option>
               </select>
@@ -72,7 +72,7 @@
 
             <div class="filter-group">
               <label for="filterType">Center Category</label>
-              <select id="filterType" class="form-control" [(ngModel)]="selectedCenterType" (change)="onFilterChange()">
+              <select id="filterType" class="form-control" [(ngModel)]="selectedCenterType" (change)="onFilterChange(); onInputChange($event, 'filterCenterType')" (keyup)="onInputChange($event, 'filterCenterType')">
                 <option value="ALL">All Centers (PSK + POPSK)</option>
                 <option value="PSK">Passport Seva Kendra (PSK)</option>
                 <option value="POPSK">Post Office PSK (POPSK)</option>

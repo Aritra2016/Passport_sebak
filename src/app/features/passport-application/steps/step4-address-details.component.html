@@ -24,7 +24,8 @@
                     <label for="curMobile">Applicant Mobile Number <span class="required">*</span></label>
                     <input id="curMobile" type="tel" formControlName="mobileNumber" appInputMask="pincode"
                       maxlength="10" class="form-control" placeholder="e.g. 9876543210"
-                      (input)="onInputChange($event, 'mobileNumber')">
+                      (input)="onInputChange($event, 'mobileNumber')"
+                      (keyup)="onInputChange($event, 'mobileNumber')">
                     <div *ngIf="isInvalid('mobileNumber')" class="field-error">10-digit mobile number is mandatory.
                     </div>
                   </div>
@@ -32,7 +33,9 @@
                         <div class="form-group">
                           <label for="curEmail">Email Address <span class="required">*</span></label>
                           <input id="curEmail" type="email" formControlName="email" class="form-control"
-                            placeholder="name@example.com" (input)="onInputChange($event, 'email')">
+                            placeholder="name@example.com"
+                            (input)="onInputChange($event, 'email')"
+                            (keyup)="onInputChange($event, 'email')">
                           <div *ngIf="isInvalid('email')" class="field-error">Valid email address is mandatory.</div>
                         </div>
                       </div>
@@ -45,12 +48,14 @@
                             <div class="dur-item">
                               <input type="number" formControlName="residingSinceYear" min="0" max="100"
                                 class="form-control" (input)="onInputChange($event, 'residingSinceYear')"
+                                (keyup)="onInputChange($event, 'residingSinceYear')"
                                 (change)="onDurationChange(); onInputChange($event, 'residingSinceYear')">
                               <span>Years</span>
                             </div>
                             <div class="dur-item">
                               <input type="number" formControlName="residingSinceMonths" min="0" max="11"
                                 class="form-control" (input)="onInputChange($event, 'residingSinceMonths')"
+                                (keyup)="onInputChange($event, 'residingSinceMonths')"
                                 (change)="onDurationChange(); onInputChange($event, 'residingSinceMonths')">
                               <span>Months</span>
                             </div>
@@ -169,22 +174,26 @@
                                             <td>
                                               <input type="text" formControlName="houseNoAndStreet" appUpperCase
                                                 class="form-control" placeholder="House no, street"
-                                                (input)="onInputChange($event, 'prevAddress[' + i + '].houseNoAndStreet')">
+                                                (input)="onInputChange($event, 'prevAddress[' + i + '].houseNoAndStreet')"
+                                                (keyup)="onInputChange($event, 'prevAddress[' + i + '].houseNoAndStreet')">
                                             </td>
                                             <td>
                                               <input type="text" formControlName="villageOrCity" appUpperCase
                                                 class="form-control" placeholder="City"
-                                                (input)="onInputChange($event, 'prevAddress[' + i + '].villageOrCity')">
+                                                (input)="onInputChange($event, 'prevAddress[' + i + '].villageOrCity')"
+                                                (keyup)="onInputChange($event, 'prevAddress[' + i + '].villageOrCity')">
                                             </td>
                                             <td>
                                               <input type="text" formControlName="state" appUpperCase
                                                 class="form-control" placeholder="State"
-                                                (input)="onInputChange($event, 'prevAddress[' + i + '].state')">
+                                                (input)="onInputChange($event, 'prevAddress[' + i + '].state')"
+                                                (keyup)="onInputChange($event, 'prevAddress[' + i + '].state')">
                                             </td>
                                             <td>
                                               <input type="text" formControlName="pinCode" appInputMask="pincode"
                                                 maxlength="6" class="form-control" placeholder="PIN"
-                                                (input)="onInputChange($event, 'prevAddress[' + i + '].pinCode')">
+                                                (input)="onInputChange($event, 'prevAddress[' + i + '].pinCode')"
+                                                (keyup)="onInputChange($event, 'prevAddress[' + i + '].pinCode')">
                                             </td>
                                             <td>
                                               <input type="date" formControlName="fromDate" class="form-control"

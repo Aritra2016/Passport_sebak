@@ -27,7 +27,8 @@
                   appUpperCase
                   class="form-control" 
                   placeholder="e.g. VIKRAMADITYA"
-                  (input)="onInputChange($event, 'givenName')">
+                  (input)="onInputChange($event, 'givenName')"
+                  (keyup)="onInputChange($event, 'givenName')">
                 <div *ngIf="isInvalid('givenName')" class="field-error">Given Name is mandatory.</div>
               </div>
 
@@ -40,7 +41,8 @@
                   appUpperCase
                   class="form-control" 
                   placeholder="e.g. SHARMA"
-                  (input)="onInputChange($event, 'surname')">
+                  (input)="onInputChange($event, 'surname')"
+                  (keyup)="onInputChange($event, 'surname')">
                 <div *ngIf="isInvalid('surname')" class="field-error">Surname is mandatory.</div>
               </div>
             </div>
@@ -58,6 +60,7 @@
                   formControlName="dateOfBirth" 
                   class="form-control"
                   (input)="onInputChange($event, 'dateOfBirth')"
+                  (keyup)="onInputChange($event, 'dateOfBirth')"
                   (change)="onDobChange(); onInputChange($event, 'dateOfBirth')">
                 <div *ngIf="isInvalid('dateOfBirth')" class="field-error">
                   Valid Date of Birth required (cannot be future date).
@@ -112,7 +115,8 @@
                   appUpperCase 
                   class="form-control" 
                   placeholder="e.g. NEW DELHI"
-                  (input)="onInputChange($event, 'birthPlace')">
+                  (input)="onInputChange($event, 'birthPlace')"
+                  (keyup)="onInputChange($event, 'birthPlace')">
                 <div *ngIf="isInvalid('birthPlace')" class="field-error">Place of birth is required.</div>
               </div>
 
@@ -125,7 +129,8 @@
                   appUpperCase 
                   class="form-control" 
                   placeholder="e.g. NEW DELHI"
-                  (input)="onInputChange($event, 'birthDistrict')">
+                  (input)="onInputChange($event, 'birthDistrict')"
+                  (keyup)="onInputChange($event, 'birthDistrict')">
                 <div *ngIf="isInvalid('birthDistrict')" class="field-error">District of birth is required.</div>
               </div>
             </div>
@@ -140,7 +145,8 @@
                   appUpperCase 
                   class="form-control" 
                   placeholder="e.g. DELHI"
-                  (input)="onInputChange($event, 'birthState')">
+                  (input)="onInputChange($event, 'birthState')"
+                  (keyup)="onInputChange($event, 'birthState')">
                 <div *ngIf="isInvalid('birthState')" class="field-error">State of birth is required.</div>
               </div>
 
@@ -153,7 +159,8 @@
                   appUpperCase 
                   class="form-control" 
                   placeholder="INDIA"
-                  (input)="onInputChange($event, 'birthCountry')">
+                  (input)="onInputChange($event, 'birthCountry')"
+                  (keyup)="onInputChange($event, 'birthCountry')">
                 <div *ngIf="isInvalid('birthCountry')" class="field-error">Country of birth is required.</div>
               </div>
             </div>
@@ -225,7 +232,8 @@
                         appUpperCase 
                         class="form-control" 
                         placeholder="Alias first name"
-                        (input)="onInputChange($event, 'alias[' + aIdx + '].givenName')">
+                        (input)="onInputChange($event, 'alias[' + aIdx + '].givenName')"
+                        (keyup)="onInputChange($event, 'alias[' + aIdx + '].givenName')">
                     </td>
                     <td>
                       <input 
@@ -234,7 +242,8 @@
                         appUpperCase 
                         class="form-control" 
                         placeholder="Alias surname"
-                        (input)="onInputChange($event, 'alias[' + aIdx + '].surname')">
+                        (input)="onInputChange($event, 'alias[' + aIdx + '].surname')"
+                        (keyup)="onInputChange($event, 'alias[' + aIdx + '].surname')">
                     </td>
                     <td style="text-align: center;">
                       <button type="button" class="btn-remove-item" (click)="removeAlias(aIdx)" title="Remove Alias">✕ Remove</button>
@@ -311,7 +320,8 @@
                         appUpperCase 
                         class="form-control" 
                         placeholder="Previous given name"
-                        (input)="onInputChange($event, 'previousName[' + pIdx + '].previousGivenName')">
+                        (input)="onInputChange($event, 'previousName[' + pIdx + '].previousGivenName')"
+                        (keyup)="onInputChange($event, 'previousName[' + pIdx + '].previousGivenName')">
                     </td>
                     <td>
                       <input 
@@ -320,7 +330,8 @@
                         appUpperCase 
                         class="form-control" 
                         placeholder="Previous surname"
-                        (input)="onInputChange($event, 'previousName[' + pIdx + '].previousSurname')">
+                        (input)="onInputChange($event, 'previousName[' + pIdx + '].previousSurname')"
+                        (keyup)="onInputChange($event, 'previousName[' + pIdx + '].previousSurname')">
                     </td>
                     <td style="text-align: center;">
                       <button type="button" class="btn-remove-item" (click)="removePreviousName(pIdx)" title="Remove Previous Name">✕ Remove</button>
@@ -395,7 +406,8 @@
                   maxlength="10" 
                   class="form-control" 
                   placeholder="ABCDE1234F"
-                  (input)="onInputChange($event, 'panNumber')">
+                  (input)="onInputChange($event, 'panNumber')"
+                  (keyup)="onInputChange($event, 'panNumber')">
               </div>
 
               <div class="form-group">
@@ -407,7 +419,8 @@
                   appUpperCase 
                   class="form-control" 
                   placeholder="e.g. DL/01/045/892019"
-                  (input)="onInputChange($event, 'voterId')">
+                  (input)="onInputChange($event, 'voterId')"
+                  (keyup)="onInputChange($event, 'voterId')">
               </div>
 
               <div class="form-group">
@@ -423,7 +436,8 @@
                   maxlength="14"
                   class="form-control" 
                   placeholder="XXXX XXXX XXXX"
-                  (input)="onInputChange($event, 'aadhaarNumber')">
+                  (input)="onInputChange($event, 'aadhaarNumber')"
+                  (keyup)="onInputChange($event, 'aadhaarNumber')">
                 
                 <div *ngIf="isInvalid('aadhaarNumber')" class="field-error">
                   <span *ngIf="form.get('aadhaarNumber')?.errors?.['required']">Aadhaar number is required for Indian nationals.</span>

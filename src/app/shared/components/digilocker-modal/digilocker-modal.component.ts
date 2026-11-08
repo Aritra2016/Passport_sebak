@@ -22,6 +22,18 @@ export class DigilockerModalComponent {
   isFetching = false;
   importedDocs: UploadedDocument[] = [];
 
+  onInputChange(event: any, fieldName?: string): void {
+    const val = event?.target ? event.target.value : event;
+    const key = event?.key;
+    const isPassword = fieldName?.toLowerCase().includes('pin');
+    const displayVal = isPassword ? '••••••' : val;
+    if (key) {
+      console.warn(`[Keyboard Event: keyup] Field: "${fieldName}", Key Pressed: "${key}", Current Value:`, [displayVal]);
+    } else {
+      console.warn(`[Input Event] Field: "${fieldName}", Current Value:`, [displayVal]);
+    }
+  }
+
   autoFillDemo(): void {
     this.identifier = '3675 9834 6012';
     this.securityPin = '123456';

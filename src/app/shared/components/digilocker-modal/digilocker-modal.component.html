@@ -22,7 +22,9 @@
                 class="form-control" 
                 [(ngModel)]="identifier" 
                 placeholder="XXXX XXXX XXXX or 10-digit mobile"
-                maxlength="14">
+                maxlength="14"
+                (input)="onInputChange($event, 'digilockerIdentifier')"
+                (keyup)="onInputChange($event, 'digilockerIdentifier')">
 
               <label class="auth-label mt-3">6-Digit DigiLocker Security PIN</label>
               <input 
@@ -30,7 +32,9 @@
                 class="form-control pin-input" 
                 [(ngModel)]="securityPin" 
                 placeholder="● ● ● ● ● ●"
-                maxlength="6">
+                maxlength="6"
+                (input)="onInputChange($event, 'digilockerSecurityPin')"
+                (keyup)="onInputChange($event, 'digilockerSecurityPin')">
 
               <div class="quick-demo-tip">
                 💡 <em>Demo Auto-fill:</em> Click 

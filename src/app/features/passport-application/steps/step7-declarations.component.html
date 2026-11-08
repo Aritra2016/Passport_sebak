@@ -20,7 +20,9 @@
           </div>
           <div *ngIf="form.get('hasCriminalProceedings')?.value" class="q-explanation">
             <label>Details of pending case / Court name / FIR No. <span class="req">*</span></label>
-            <input type="text" formControlName="criminalDetails" class="form-control" placeholder="Provide case details">
+            <input type="text" formControlName="criminalDetails" class="form-control" placeholder="Provide case details"
+              (input)="onInputChange($event, 'criminalDetails')"
+              (keyup)="onInputChange($event, 'criminalDetails')">
           </div>
 
           <!-- Question 2 -->

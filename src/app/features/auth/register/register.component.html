@@ -17,7 +17,9 @@
                   formControlName="givenName" 
                   appUpperCase
                   class="form-control" 
-                  placeholder="e.g. VIKRAMADITYA">
+                  placeholder="e.g. VIKRAMADITYA"
+                  (input)="onInputChange($event, 'givenName')"
+                  (keyup)="onInputChange($event, 'givenName')">
                 <div *ngIf="isFieldInvalid('givenName')" class="field-error">Given name is required.</div>
               </div>
 
@@ -29,7 +31,9 @@
                   formControlName="surname" 
                   appUpperCase
                   class="form-control" 
-                  placeholder="e.g. SHARMA">
+                  placeholder="e.g. SHARMA"
+                  (input)="onInputChange($event, 'surname')"
+                  (keyup)="onInputChange($event, 'surname')">
                 <div *ngIf="isFieldInvalid('surname')" class="field-error">Surname is required.</div>
               </div>
             </div>
@@ -41,13 +45,16 @@
                   id="dob" 
                   type="date" 
                   formControlName="dob" 
-                  class="form-control">
+                  class="form-control"
+                  (input)="onInputChange($event, 'dob')"
+                  (keyup)="onInputChange($event, 'dob')"
+                  (change)="onInputChange($event, 'dob')">
                 <div *ngIf="isFieldInvalid('dob')" class="field-error">Valid date of birth required.</div>
               </div>
 
               <div class="form-group">
                 <label for="rpo">Passport Office Jurisdiction <span class="req">*</span></label>
-                <select id="rpo" formControlName="passportOffice" class="form-control">
+                <select id="rpo" formControlName="passportOffice" class="form-control" (change)="onInputChange($event, 'passportOffice')">
                   <option value="">-- Select RPO --</option>
                   <option value="RPO_DELHI">RPO Delhi</option>
                   <option value="RPO_MUMBAI">RPO Mumbai</option>
@@ -70,7 +77,9 @@
                   formControlName="email" 
                   autocomplete="email"
                   class="form-control" 
-                  placeholder="e.g. name@example.com">
+                  placeholder="e.g. name@example.com"
+                  (input)="onInputChange($event, 'email')"
+                  (keyup)="onInputChange($event, 'email')">
                 <div *ngIf="isFieldInvalid('email')" class="field-error">Valid email address required.</div>
               </div>
 
@@ -84,7 +93,9 @@
                   appInputMask="pincode"
                   maxlength="10"
                   class="form-control" 
-                  placeholder="e.g. 9876543210">
+                  placeholder="e.g. 9876543210"
+                  (input)="onInputChange($event, 'mobile')"
+                  (keyup)="onInputChange($event, 'mobile')">
                 <div *ngIf="isFieldInvalid('mobile')" class="field-error">10-digit mobile number required.</div>
               </div>
             </div>
@@ -98,7 +109,9 @@
                   formControlName="password" 
                   autocomplete="new-password"
                   class="form-control" 
-                  placeholder="Min 8 characters with symbol">
+                  placeholder="Min 8 characters with symbol"
+                  (input)="onInputChange($event, 'password')"
+                  (keyup)="onInputChange($event, 'password')">
               </div>
 
               <div class="form-group">
@@ -109,7 +122,9 @@
                   formControlName="confirmPassword" 
                   autocomplete="new-password"
                   class="form-control" 
-                  placeholder="Re-type password">
+                  placeholder="Re-type password"
+                  (input)="onInputChange($event, 'confirmPassword')"
+                  (keyup)="onInputChange($event, 'confirmPassword')">
               </div>
             </div>
 

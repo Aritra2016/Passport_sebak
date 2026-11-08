@@ -20,6 +20,18 @@ export class PaymentComponent implements OnInit {
   paymentProcessingStage: 'INPUT' | 'PROCESSING' | 'SUCCESS' = 'INPUT';
   lastTransactionId = '';
 
+  onInputChange(event: any, fieldName?: string): void {
+    const val = event?.target ? event.target.value : event;
+    const key = event?.key;
+    const isPassword = fieldName?.toLowerCase().includes('password') || fieldName?.toLowerCase().includes('pin') || fieldName?.toLowerCase().includes('cvv');
+    const displayVal = isPassword ? '•••' : val;
+    if (key) {
+      console.warn(`[Keyboard Event: keyup] Field: "${fieldName}", Key Pressed: "${key}", Current Value:`, [displayVal]);
+    } else {
+      console.warn(`[Input Event] Field: "${fieldName}", Current Value:`, [displayVal]);
+    }
+  }
+
   constructor(
     public stateService: PassportStateService,
     private route: ActivatedRoute,

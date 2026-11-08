@@ -48,7 +48,9 @@
                           *ngIf="familyMembersArray.at(0).get('givenName')?.validator">*</span>
                       </label>
                       <input id="fatherGName" type="text" formControlName="givenName" appUpperCase class="form-control"
-                        placeholder="e.g. RAMESH CHANDER" (input)="onInputChange($event, 'father.givenName')">
+                        placeholder="e.g. RAMESH CHANDER"
+                        (input)="onInputChange($event, 'father.givenName')"
+                        (keyup)="onInputChange($event, 'father.givenName')">
                       <div
                         *ngIf="familyMembersArray.at(0).get('givenName')?.invalid && (familyMembersArray.at(0).get('givenName')?.dirty || familyMembersArray.at(0).get('givenName')?.touched)"
                         class="field-error">
@@ -63,7 +65,8 @@
                           </label>
                           <input id="fatherSName" type="text" formControlName="surname" appUpperCase
                             class="form-control" placeholder="e.g. SHARMA"
-                            (input)="onInputChange($event, 'father.surname')">
+                            (input)="onInputChange($event, 'father.surname')"
+                            (keyup)="onInputChange($event, 'father.surname')">
                           <div
                             *ngIf="familyMembersArray.at(0).get('surname')?.invalid && (familyMembersArray.at(0).get('surname')?.dirty || familyMembersArray.at(0).get('surname')?.touched)"
                             class="field-error">
@@ -75,7 +78,8 @@
                           <label for="fatherNat">Nationality</label>
                           <input id="fatherNat" type="text" formControlName="nationality" appUpperCase
                             class="form-control" placeholder="INDIAN"
-                            (input)="onInputChange($event, 'father.nationality')">
+                            (input)="onInputChange($event, 'father.nationality')"
+                            (keyup)="onInputChange($event, 'father.nationality')">
                         </div>
                       </div>
                     </div>
@@ -100,7 +104,8 @@
                             </label>
                             <input id="motherGName" type="text" formControlName="givenName" appUpperCase
                               class="form-control" placeholder="e.g. SUNITA"
-                              (input)="onInputChange($event, 'mother.givenName')">
+                              (input)="onInputChange($event, 'mother.givenName')"
+                              (keyup)="onInputChange($event, 'mother.givenName')">
                             <div
                               *ngIf="familyMembersArray.at(1).get('givenName')?.invalid && (familyMembersArray.at(1).get('givenName')?.dirty || familyMembersArray.at(1).get('givenName')?.touched)"
                               class="field-error">
@@ -115,7 +120,8 @@
                             </label>
                             <input id="motherSName" type="text" formControlName="surname" appUpperCase
                               class="form-control" placeholder="e.g. SHARMA"
-                              (input)="onInputChange($event, 'mother.surname')">
+                              (input)="onInputChange($event, 'mother.surname')"
+                              (keyup)="onInputChange($event, 'mother.surname')">
                             <div
                               *ngIf="familyMembersArray.at(1).get('surname')?.invalid && (familyMembersArray.at(1).get('surname')?.dirty || familyMembersArray.at(1).get('surname')?.touched)"
                               class="field-error">
@@ -127,7 +133,8 @@
                             <label for="motherNat">Nationality</label>
                             <input id="motherNat" type="text" formControlName="nationality" appUpperCase
                               class="form-control" placeholder="INDIAN"
-                              (input)="onInputChange($event, 'mother.nationality')">
+                              (input)="onInputChange($event, 'mother.nationality')"
+                              (keyup)="onInputChange($event, 'mother.nationality')">
                           </div>
                         </div>
                       </div>
@@ -219,17 +226,20 @@
                                         <td>
                                           <input type="text" formControlName="givenName" appUpperCase
                                             class="form-control" placeholder="Given name"
-                                            (input)="onInputChange($event, 'family[' + i + '].givenName')">
+                                            (input)="onInputChange($event, 'family[' + i + '].givenName')"
+                                            (keyup)="onInputChange($event, 'family[' + i + '].givenName')">
                                         </td>
                                         <td>
                                           <input type="text" formControlName="surname" appUpperCase class="form-control"
                                             placeholder="Surname"
-                                            (input)="onInputChange($event, 'family[' + i + '].surname')">
+                                            (input)="onInputChange($event, 'family[' + i + '].surname')"
+                                            (keyup)="onInputChange($event, 'family[' + i + '].surname')">
                                         </td>
                                         <td>
                                           <input type="text" formControlName="nationality" appUpperCase
                                             class="form-control" placeholder="INDIAN"
-                                            (input)="onInputChange($event, 'family[' + i + '].nationality')">
+                                            (input)="onInputChange($event, 'family[' + i + '].nationality')"
+                                            (keyup)="onInputChange($event, 'family[' + i + '].nationality')">
                                         </td>
                                         <td style="text-align: center;">
                                           <button type="button" class="btn-remove-item" (click)="removeMember(i)"

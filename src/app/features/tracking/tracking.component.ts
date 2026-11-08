@@ -26,6 +26,16 @@ export class TrackingComponent implements OnInit {
   activeApplication?: PassportApplication;
   pipelineStages: PipelineStageUI[] = [];
 
+  onInputChange(event: any, fieldName?: string): void {
+    const val = event?.target ? event.target.value : event;
+    const key = event?.key;
+    if (key) {
+      console.warn(`[Keyboard Event: keyup] Field: "${fieldName}", Key Pressed: "${key}", Current Value:`, [val]);
+    } else {
+      console.warn(`[Input Event] Field: "${fieldName}", Current Value:`, [val]);
+    }
+  }
+
   constructor(
     public stateService: PassportStateService,
     private route: ActivatedRoute,

@@ -6,7 +6,8 @@
     </label>
     <input [id]="prefix + 'house'" type="text" formControlName="houseNoAndStreet" appUpperCase class="form-control"
       placeholder="e.g. FLAT NO 402, SHIVAM APARTMENTS, MG ROAD" [attr.aria-required]="true"
-      (input)="onInputChange($event, 'houseNoAndStreet')">
+      (input)="onInputChange($event, 'houseNoAndStreet')"
+      (keyup)="onInputChange($event, 'houseNoAndStreet')">
     <div *ngIf="isFieldInvalid('houseNoAndStreet')" class="field-error">
       House No. and Street address is required.
     </div>
@@ -18,7 +19,9 @@
       Village / Town / City <span class="req">*</span>
     </label>
     <input [id]="prefix + 'city'" type="text" formControlName="villageOrCity" appUpperCase class="form-control"
-      placeholder="e.g. NEW DELHI" (input)="onInputChange($event, 'villageOrCity')">
+      placeholder="e.g. NEW DELHI"
+      (input)="onInputChange($event, 'villageOrCity')"
+      (keyup)="onInputChange($event, 'villageOrCity')">
     <div *ngIf="isFieldInvalid('villageOrCity')" class="field-error">
       City or Town is required.
     </div>
@@ -60,7 +63,9 @@
       Police Station <span class="req">*</span>
     </label>
     <input [id]="prefix + 'ps'" type="text" formControlName="policeStation" appUpperCase class="form-control"
-      placeholder="e.g. PRASHANT VIHAR POLICE STATION" (input)="onInputChange($event, 'policeStation')">
+      placeholder="e.g. PRASHANT VIHAR POLICE STATION"
+      (input)="onInputChange($event, 'policeStation')"
+      (keyup)="onInputChange($event, 'policeStation')">
     <div *ngIf="isFieldInvalid('policeStation')" class="field-error">
       Police station is mandatory for verification.
     </div>
@@ -72,7 +77,9 @@
       PIN Code (6 Digits) <span class="req">*</span>
     </label>
     <input [id]="prefix + 'pin'" type="text" formControlName="pinCode" appInputMask="pincode" maxlength="6"
-      class="form-control" placeholder="e.g. 110085" (input)="onInputChange($event, 'pinCode')">
+      class="form-control" placeholder="e.g. 110085"
+      (input)="onInputChange($event, 'pinCode')"
+      (keyup)="onInputChange($event, 'pinCode')">
     <div *ngIf="isFieldInvalid('pinCode')" class="field-error">
       Valid 6-digit Indian PIN code required (cannot start with 0).
     </div>
