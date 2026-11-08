@@ -36,6 +36,14 @@ export class PaymentComponent implements OnInit {
     } else if (apps.length > 0) {
       this.application = apps[0];
     }
+
+    console.warn('[PaymentComponent] Initialized:', {
+      arn: this.application?.arn,
+      application: this.application,
+      selectedGateway: this.selectedGateway,
+      selectedMode: this.selectedMode,
+      totalFee: this.calculateTotal()
+    });
   }
 
   calculateTotal(): number {
@@ -62,11 +70,17 @@ export class PaymentComponent implements OnInit {
   }
 
   openPaymentBridge(): void {
+    console.warn('[PaymentComponent] Opening payment bridge modal:', {
+      gateway: this.selectedGateway,
+      mode: this.selectedMode,
+      totalFee: this.calculateTotal()
+    });
     this.paymentProcessingStage = 'INPUT';
     this.showGatewayModal = true;
   }
 
   processPayment(): void {
+    console.warn('[PaymentComponent] Initiating payment transaction via:', this.selectedGateway);
     this.paymentProcessingStage = 'PROCESSING';
 
     setTimeout(() => {
@@ -88,6 +102,7 @@ export class PaymentComponent implements OnInit {
           status: 'SUCCESS'
         };
 
+        console.warn('[PaymentComponent] Payment successful, recording details:', paymentDetails);
         this.stateService.recordPayment(this.application.arn, paymentDetails);
 
         // If slot is held in state, confirm appointment
