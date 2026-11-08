@@ -1,0 +1,115 @@
+<div class="step-card">
+      <div class="step-header">
+        <span class="step-badge">Step 7 of 9</span>
+        <h3>Statutory Self-Declaration</h3>
+        <p class="step-subtitle">Mandatory declarations under the Passports Act, 1967. Suppressing information is an offence punishable by imprisonment.</p>
+      </div>
+
+      <form [formGroup]="form" class="step-form">
+        <div class="statutory-list">
+          <!-- Question 1 -->
+          <div class="question-row">
+            <div class="q-number">1.</div>
+            <div class="q-content">
+              <span class="q-text">Have you ever been charged with any criminal proceedings pending before a court in India?</span>
+              <div class="radio-inline">
+                <label><input type="radio" [value]="true" formControlName="hasCriminalProceedings"> Yes</label>
+                <label><input type="radio" [value]="false" formControlName="hasCriminalProceedings"> No</label>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="form.get('hasCriminalProceedings')?.value" class="q-explanation">
+            <label>Details of pending case / Court name / FIR No. <span class="req">*</span></label>
+            <input type="text" formControlName="criminalDetails" class="form-control" placeholder="Provide case details">
+          </div>
+
+          <!-- Question 2 -->
+          <div class="question-row">
+            <div class="q-number">2.</div>
+            <div class="q-content">
+              <span class="q-text">Has any warrant or summons for your appearance been issued & pending before a court in India?</span>
+              <div class="radio-inline">
+                <label><input type="radio" [value]="true" formControlName="hasWarrantOrSummons"> Yes</label>
+                <label><input type="radio" [value]="false" formControlName="hasWarrantOrSummons"> No</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="question-row">
+            <div class="q-number">3.</div>
+            <div class="q-content">
+              <span class="q-text">Have you ever been convicted by a court in India for an offence with imprisonment of not less than two years?</span>
+              <div class="radio-inline">
+                <label><input type="radio" [value]="true" formControlName="hasBeenConvicted"> Yes</label>
+                <label><input type="radio" [value]="false" formControlName="hasBeenConvicted"> No</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 4 -->
+          <div class="question-row">
+            <div class="q-number">4.</div>
+            <div class="q-content">
+              <span class="q-text">Have you ever been refused or denied a passport or travel document by the Government of India?</span>
+              <div class="radio-inline">
+                <label><input type="radio" [value]="true" formControlName="hasRefusedPassport"> Yes</label>
+                <label><input type="radio" [value]="false" formControlName="hasRefusedPassport"> No</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 5 -->
+          <div class="question-row">
+            <div class="q-number">5.</div>
+            <div class="q-content">
+              <span class="q-text">Has your passport ever been impounded or revoked by any passport authority?</span>
+              <div class="radio-inline">
+                <label><input type="radio" [value]="true" formControlName="hasImpoundedPassport"> Yes</label>
+                <label><input type="radio" [value]="false" formControlName="hasImpoundedPassport"> No</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 6 -->
+          <div class="question-row">
+            <div class="q-number">6.</div>
+            <div class="q-content">
+              <span class="q-text">Have you ever applied for or acquired citizenship of any other country, or returned to India on an Emergency Certificate?</span>
+              <div class="radio-inline">
+                <label><input type="radio" [value]="true" formControlName="hasForeignCitizenship"> Yes</label>
+                <label><input type="radio" [value]="false" formControlName="hasForeignCitizenship"> No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Solemn Affirmation Checkbox -->
+        <div class="affirmation-card">
+          <label class="affirmation-label">
+            <input type="checkbox" formControlName="agreedToTerms">
+            <div class="affirmation-text">
+              <strong>Solemn Affirmation & Consent (Section 12 of Passports Act, 1967):</strong>
+              <p>
+                I owe allegiance to the sovereignty, unity & integrity of India, and have not voluntarily acquired the citizenship of another country.
+                I hereby declare that all information furnished in this application is true, correct, and complete to the best of my knowledge.
+                I understand that furnishing false information or suppressing material information is punishable with imprisonment up to 2 years or fine up to ₹5,000 under the Passports Act, 1967.
+              </p>
+            </div>
+          </label>
+          <div *ngIf="isInvalid('agreedToTerms')" class="field-error mt-2">
+            You must read and agree to the statutory declaration to proceed.
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="form-actions">
+          <button type="button" class="btn-prev" (click)="onPrev()">
+            🠐 Back to Step 6
+          </button>
+          <button type="button" class="btn-save-next" [disabled]="!form.get('agreedToTerms')?.value" (click)="onNext()">
+            Save & Continue to Step 8 ➔
+          </button>
+        </div>
+      </form>
+    </div>

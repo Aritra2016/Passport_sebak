@@ -1,0 +1,179 @@
+<div class="tracking-page" id="main-content">
+      <div class="tracking-container">
+        <!-- Header -->
+        <div class="page-header">
+          <span class="sub-title">Live Application Status Tracking</span>
+          <h2>Track Passport Application Status in Real-Time</h2>
+          <p>Check the end-to-end processing pipeline from initial submission to India Post Speed Post delivery.</p>
+        </div>
+
+        <!-- Search / Tracker Input Form Card -->
+        <div class="search-card">
+          <div class="search-form-grid">
+            <div class="input-group">
+              <label for="trackArn">Application Reference Number (ARN) <span class="req">*</span></label>
+              <input 
+                id="trackArn"
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="searchArn" 
+                appUpperCase 
+                placeholder="e.g. ARN-DL01-84920194-2026">
+            </div>
+
+            <div class="input-group">
+              <label for="trackDob">Date of Birth (DD/MM/YYYY) <span class="req">*</span></label>
+              <input 
+                id="trackDob"
+                type="date" 
+                class="form-control" 
+                [(ngModel)]="searchDob">
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn-track-submit" (click)="onTrack()">
+                🔍 Track Status
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Recent Applications Chips -->
+          <div class="quick-apps-bar" *ngIf="stateService.applications().length > 0">
+            <span class="quick-label">Or track recent application:</span>
+            <div class="chips-list">
+              <button 
+                *ngFor="let app of stateService.applications()"
+                type="button" 
+                class="arn-chip"
+                [class.active]="searchArn === app.arn"
+                (click)="selectApplication(app)">
+                {{ app.arn }} ({{ app.personalDetails.givenName }})
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Application Overview Banner -->
+        <div *ngIf="activeApplication" class="application-summary-card">
+          <div class="summary-top">
+            <div>
+              <span class="summary-arn">{{ activeApplication.arn }}</span>
+              <h3 class="applicant-name">
+                {{ activeApplication.personalDetails.givenName }} {{ activeApplication.personalDetails.surname }}
+              </h3>
+              <p class="summary-sub">
+                Service: <strong>{{ activeApplication.serviceType.applicationType }} Passport ({{ activeApplication.serviceType.schemeType }})</strong> • 
+                File No: <strong>DL1069820194821</strong> • 
+                PSK: <strong>{{ activeApplication.appointment?.pskName || 'PSK Delhi Herald House' }}</strong>
+              </p>
+            </div>
+
+            <div class="current-stage-tag" [ngClass]="(activeApplication.status | statusBadge).cssClass">
+              {{ (activeApplication.status | statusBadge).text }}
+            </div>
+          </div>
+
+          <!-- Speed Post Tracking Banner (If Dispatched) -->
+          <div *ngIf="activeApplication.status === 'DISPATCHED'" class="dispatch-banner">
+            <span class="speed-post-icon">📮</span>
+            <div class="dispatch-info">
+              <strong>Dispatched via India Post Speed Post</strong>
+              <p>Consignment Tracking Number: <strong class="tracking-no">{{ activeApplication.speedPostTrackingNo || 'EM849201849IN' }}</strong></p>
+            </div>
+            <a href="javascript:void(0)" class="btn-speed-post-track" (click)="trackSpeedPost()">
+              Track on India Post Portal ➔
+            </a>
+          </div>
+
+          <!-- Interactive Status Pipeline Simulator Bar (for testing all 5 stages!) -->
+          <div class="simulator-strip">
+            <span class="sim-label">⚙️ Interactive Stage Tester (Click to simulate lifecycle):</span>
+            <div class="sim-buttons">
+              <button 
+                type="button" 
+                class="sim-btn" 
+                [class.active]="activeApplication.status === 'SUBMITTED'"
+                (click)="simulateStatus('SUBMITTED')">
+                1. Submitted
+              </button>
+              <button 
+                type="button" 
+                class="sim-btn" 
+                [class.active]="activeApplication.status === 'APPOINTMENT_ATTENDED'"
+                (click)="simulateStatus('APPOINTMENT_ATTENDED')">
+                2. Attended
+              </button>
+              <button 
+                type="button" 
+                class="sim-btn" 
+                [class.active]="activeApplication.status === 'POLICE_VERIFICATION_INITIATED'"
+                (click)="simulateStatus('POLICE_VERIFICATION_INITIATED')">
+                3. Police Verification
+              </button>
+              <button 
+                type="button" 
+                class="sim-btn" 
+                [class.active]="activeApplication.status === 'PASSPORT_PRINTED'"
+                (click)="simulateStatus('PASSPORT_PRINTED')">
+                4. Printed
+              </button>
+              <button 
+                type="button" 
+                class="sim-btn" 
+                [class.active]="activeApplication.status === 'DISPATCHED'"
+                (click)="simulateStatus('DISPATCHED')">
+                5. Dispatched
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5-Stage Visual Progress Pipeline -->
+        <div *ngIf="activeApplication" class="pipeline-card">
+          <h3 class="pipeline-title">Application Processing Milestones Pipeline</h3>
+
+          <div class="stages-timeline">
+            <div 
+              *ngFor="let stage of pipelineStages; let i = index" 
+              class="timeline-stage"
+              [class.completed]="stage.status === 'COMPLETED'"
+              [class.current]="stage.status === 'CURRENT'"
+              [class.pending]="stage.status === 'PENDING'">
+
+              <!-- Connector Line -->
+              <div class="stage-connector" *ngIf="i < pipelineStages.length - 1"></div>
+
+              <!-- Stage Circle Icon -->
+              <div class="stage-marker">
+                <span *ngIf="stage.status === 'COMPLETED'">✓</span>
+                <span *ngIf="stage.status === 'CURRENT'">{{ stage.icon }}</span>
+                <span *ngIf="stage.status === 'PENDING'">{{ stage.stageNumber }}</span>
+              </div>
+
+              <!-- Stage Details -->
+              <div class="stage-details">
+                <div class="stage-header-row">
+                  <h4 class="stage-name">{{ stage.title }}</h4>
+                  <span class="stage-status-badge">{{ stage.subTitle }}</span>
+                </div>
+                <div class="stage-date" *ngIf="stage.dateStr">
+                  📅 {{ stage.dateStr }}
+                </div>
+                <p class="stage-desc">{{ stage.description }}</p>
+
+                <div *ngIf="stage.officerRemarks" class="officer-remarks-box">
+                  <strong>Authority Remarks:</strong> {{ stage.officerRemarks }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- If No Application Selected / Not Found -->
+        <div *ngIf="!activeApplication" class="empty-track-box">
+          <div class="empty-icon">🔎</div>
+          <h3>Enter ARN & Date of Birth Above</h3>
+          <p>Please enter your 22-digit Application Reference Number (ARN) or click one of your submitted applications to view the live tracking pipeline.</p>
+        </div>
+      </div>
+    </div>

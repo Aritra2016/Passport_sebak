@@ -1,0 +1,206 @@
+<div class="appointment-page" id="main-content">
+      <div class="appointment-container">
+        <!-- Breadcrumb / Header -->
+        <div class="page-header">
+          <span class="sub-title">Passport Seva Appointment Scheduling</span>
+          <h2>Select Passport Seva Kendra (PSK) & Reserve Appointment Slot</h2>
+          <p>Book your biometric capture and original document verification appointment at your nearest PSK or POPSK.</p>
+        </div>
+
+        <!-- Application Selector / Summary -->
+        <div class="arn-info-strip">
+          <div class="arn-detail">
+            <span class="label">Booking for Application:</span>
+            <select class="arn-dropdown" [ngModel]="selectedArn" (ngModelChange)="onArnChange($event)">
+              <option *ngFor="let a of stateService.applications()" [value]="a.arn">
+                {{ a.arn }} - {{ a.personalDetails.givenName }} {{ a.personalDetails.surname }} ({{ a.serviceType.schemeType }})
+              </option>
+            </select>
+          </div>
+
+          <div *ngIf="activeApplication?.appointment" class="existing-slot-badge">
+            ✓ Existing Slot: {{ activeApplication?.appointment?.pskName }} on {{ activeApplication?.appointment?.appointmentDate }} at {{ activeApplication?.appointment?.appointmentTime }}
+          </div>
+        </div>
+
+        <!-- 10-Minute Slot Hold Visual Countdown Banner -->
+        <div *ngIf="stateService.isSlotHeld() && stateService.activeSlotHold() as held" class="slot-hold-banner" role="alert">
+          <div class="hold-icon-box">⏱️</div>
+          <div class="hold-content">
+            <div class="hold-title-row">
+              <strong>TEMPORARY APPOINTMENT SLOT HELD: </strong>
+              <span class="timer-countdown">{{ stateService.formattedSlotTimer() }} minutes remaining</span>
+            </div>
+            <p class="hold-desc">
+              Your appointment at <strong>{{ held.pskName }}</strong> on <strong>{{ held.appointmentDate }}</strong> at <strong>{{ held.appointmentTime }}</strong> is reserved for 10 minutes while you complete fee payment.
+            </p>
+          </div>
+          <div class="hold-actions">
+            <button type="button" class="btn-proceed-pay" (click)="proceedToPayment()">
+              Proceed to Payment ➔
+            </button>
+            <button type="button" class="btn-cancel-hold" (click)="stateService.releaseSlot()">
+              Release Slot
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 1: PSK Locator & Filter -->
+        <div class="filter-card">
+          <h3 class="filter-title">1. Locate Nearby PSK / POPSK</h3>
+
+          <div class="filters-grid">
+            <div class="filter-group">
+              <label for="filterState">State / Union Territory</label>
+              <select id="filterState" class="form-control" [(ngModel)]="selectedState" (change)="onFilterChange()">
+                <option value="DELHI">Delhi</option>
+                <option value="MAHARASHTRA">Maharashtra</option>
+                <option value="KARNATAKA">Karnataka</option>
+                <option value="TAMIL NADU">Tamil Nadu</option>
+                <option value="WEST BENGAL">West Bengal</option>
+                <option value="UTTAR PRADESH">Uttar Pradesh</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filterDistrict">District / City</label>
+              <select id="filterDistrict" class="form-control" [(ngModel)]="selectedDistrict" (change)="onFilterChange()">
+                <option value="ALL">All Districts / Kendras</option>
+                <option *ngFor="let dist of availableDistricts" [value]="dist">{{ dist }}</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filterType">Center Category</label>
+              <select id="filterType" class="form-control" [(ngModel)]="selectedCenterType" (change)="onFilterChange()">
+                <option value="ALL">All Centers (PSK + POPSK)</option>
+                <option value="PSK">Passport Seva Kendra (PSK)</option>
+                <option value="POPSK">Post Office PSK (POPSK)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kendras List Cards -->
+        <div class="kendras-section">
+          <h4 class="section-title">Available Passport Seva Kendras in {{ selectedState }} ({{ filteredKendras.length }})</h4>
+
+          <div class="kendras-grid">
+            <div 
+              *ngFor="let k of filteredKendras" 
+              class="kendra-card"
+              [class.active]="selectedKendra?.id === k.id"
+              (click)="selectKendra(k)">
+              
+              <div class="kendra-header">
+                <div>
+                  <span class="kendra-type-badge" [class.popsk]="k.type === 'POPSK'">{{ k.type }}</span>
+                  <h4 class="kendra-name">{{ k.name }}</h4>
+                </div>
+                <input type="radio" name="kendra" [checked]="selectedKendra?.id === k.id">
+              </div>
+
+              <p class="kendra-address">{{ k.address }}, PIN - {{ k.pinCode }}</p>
+
+              <div class="kendra-meta-row">
+                <div class="meta-item">
+                  <span class="meta-label">Operating Hours:</span>
+                  <span class="meta-val">{{ k.operatingHours }}</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Earliest Appointment:</span>
+                  <span class="meta-val text-green font-bold">{{ k.earliestAvailableDate }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Interactive Slot Calendar Grid -->
+        <div class="calendar-card" *ngIf="selectedKendra">
+          <div class="calendar-header">
+            <div>
+              <h3 class="filter-title">2. Select Appointment Date at {{ selectedKendra.name }}</h3>
+              <p class="calendar-desc">Color codes: 
+                <span class="legend green">● Available (>15 slots)</span>
+                <span class="legend yellow">● Fast Filling (1-10 slots)</span>
+                <span class="legend red">● Full</span>
+              </p>
+            </div>
+            <div class="calendar-month-title">
+              <strong>NOVEMBER 2026</strong>
+            </div>
+          </div>
+
+          <div class="days-grid">
+            <button 
+              *ngFor="let day of calendarDays" 
+              type="button" 
+              class="day-cell"
+              [class.past]="day.isPast"
+              [class.avail]="day.isAvailable"
+              [class.fast-fill]="day.isFastFilling"
+              [class.full]="day.isFull"
+              [class.selected]="selectedDay?.date === day.date"
+              [disabled]="day.isPast || day.isFull"
+              (click)="selectDay(day)">
+              
+              <span class="day-name">{{ day.dayName }}</span>
+              <span class="day-number">{{ day.dayNumber }}</span>
+              <span class="slot-count" *ngIf="!day.isPast && !day.isFull">{{ day.slotsCount }} Slots</span>
+              <span class="slot-count-full" *ngIf="day.isFull">Full</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Time Slot Picker -->
+        <div class="time-picker-card" *ngIf="selectedDay">
+          <h3 class="filter-title">3. Select Appointment Time Batch for {{ selectedDay.date }}</h3>
+
+          <div class="time-batches">
+            <div class="batch-col">
+              <h5 class="batch-title">Morning Batches (09:00 AM - 12:00 PM)</h5>
+              <div class="time-slots-grid">
+                <button 
+                  *ngFor="let slot of morningSlots" 
+                  type="button" 
+                  class="btn-time-slot" 
+                  [class.active]="selectedTime === slot"
+                  (click)="selectedTime = slot">
+                  {{ slot }}
+                </button>
+              </div>
+            </div>
+
+            <div class="batch-col">
+              <h5 class="batch-title">Afternoon Batches (01:30 PM - 04:30 PM)</h5>
+              <div class="time-slots-grid">
+                <button 
+                  *ngFor="let slot of afternoonSlots" 
+                  type="button" 
+                  class="btn-time-slot" 
+                  [class.active]="selectedTime === slot"
+                  (click)="selectedTime = slot">
+                  {{ slot }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hold Slot Action Button -->
+          <div class="slot-action-strip">
+            <div class="selection-summary">
+              Selected: <strong>{{ selectedKendra?.name }}</strong> on <strong>{{ selectedDay.date }}</strong> at <strong>{{ selectedTime || 'Select Time' }}</strong>
+            </div>
+
+            <button 
+              type="button" 
+              class="btn-hold-slot" 
+              [disabled]="!selectedTime"
+              (click)="onHoldSlot()">
+              🔒 Temporarily Hold This Slot (10 Mins) & Proceed
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>

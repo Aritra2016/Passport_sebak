@@ -1,0 +1,203 @@
+<div class="step-card">
+      <div class="step-header">
+        <span class="step-badge">Step 9 of 9</span>
+        <h3>Application Summary & Final Submission</h3>
+        <p class="step-subtitle">Please thoroughly verify all entered particulars before official submission. Use the 'Edit' buttons to modify any step.</p>
+      </div>
+
+      <div class="review-sections">
+        <!-- 1. Service Type -->
+        <div class="review-box">
+          <div class="box-header">
+            <h4>1. Service Type Details</h4>
+            <button type="button" class="btn-edit-shortcut" (click)="jumpToStep(1)">✏️ Edit Step 1</button>
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Application Type:</span>
+              <span class="val"><strong>{{ application.serviceType.applicationType }} PASSPORT</strong></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Scheme Type:</span>
+              <span class="val" [class.tatkaal-text]="application.serviceType.schemeType === 'TATKAAL'">
+                {{ application.serviceType.schemeType }}
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Booklet Size:</span>
+              <span class="val">{{ application.serviceType.bookletSize === '60_PAGES' ? '60 Pages (Jumbo)' : '36 Pages (Standard)' }}</span>
+            </div>
+            <div class="info-item" *ngIf="application.serviceType.reissueReason">
+              <span class="label">Re-issue Reason:</span>
+              <span class="val">{{ application.serviceType.reissueReason }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Personal Details -->
+        <div class="review-box">
+          <div class="box-header">
+            <h4>2. Applicant Personal Details</h4>
+            <button type="button" class="btn-edit-shortcut" (click)="jumpToStep(2)">✏️ Edit Step 2</button>
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Given Name:</span>
+              <span class="val"><strong>{{ application.personalDetails.givenName }}</strong></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Surname:</span>
+              <span class="val"><strong>{{ application.personalDetails.surname }}</strong></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Date of Birth:</span>
+              <span class="val">{{ application.personalDetails.dateOfBirth }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Gender:</span>
+              <span class="val">{{ application.personalDetails.gender }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Marital Status:</span>
+              <span class="val">{{ application.personalDetails.maritalStatus }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Place of Birth:</span>
+              <span class="val">{{ application.personalDetails.birthPlace }}, {{ application.personalDetails.birthState }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Aadhaar Card:</span>
+              <span class="val font-mono"><strong>{{ application.personalDetails.aadhaarNumber | maskText:4:4 }}</strong></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Non-ECR Category:</span>
+              <span class="val">{{ application.personalDetails.isNonEcrEligible ? 'YES (Eligible)' : 'NO' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Family Details -->
+        <div class="review-box">
+          <div class="box-header">
+            <h4>3. Family Particulars</h4>
+            <button type="button" class="btn-edit-shortcut" (click)="jumpToStep(3)">✏️ Edit Step 3</button>
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Father's Name:</span>
+              <span class="val">{{ application.familyDetails.fatherGivenName }} {{ application.familyDetails.fatherSurname }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Mother's Name:</span>
+              <span class="val">{{ application.familyDetails.motherGivenName }} {{ application.familyDetails.motherSurname }}</span>
+            </div>
+            <div class="info-item" *ngIf="application.familyDetails.spouseGivenName">
+              <span class="label">Spouse Name:</span>
+              <span class="val">{{ application.familyDetails.spouseGivenName }} {{ application.familyDetails.spouseSurname }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Residential Address -->
+        <div class="review-box">
+          <div class="box-header">
+            <h4>4. Residential Address Particulars</h4>
+            <button type="button" class="btn-edit-shortcut" (click)="jumpToStep(4)">✏️ Edit Step 4</button>
+          </div>
+          <div class="info-grid">
+            <div class="info-item col-2">
+              <span class="label">Present Address:</span>
+              <span class="val">
+                {{ application.addressDetails.houseNoAndStreet }}, {{ application.addressDetails.villageOrCity }}, 
+                {{ application.addressDetails.district }}, {{ application.addressDetails.state }} - {{ application.addressDetails.pinCode }}
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="label">Police Station:</span>
+              <span class="val"><strong>{{ application.addressDetails.policeStation }}</strong></span>
+            </div>
+            <div class="info-item">
+              <span class="label">Mobile Number:</span>
+              <span class="val">{{ application.addressDetails.mobileNumber }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Residing Duration:</span>
+              <span class="val">{{ application.addressDetails.residingSinceYear }} Years, {{ application.addressDetails.residingSinceMonths }} Months</span>
+            </div>
+          </div>
+
+          <div *ngIf="application.addressDetails.previousAddresses && application.addressDetails.previousAddresses.length > 0" class="prev-summary mt-2">
+            <span class="label">Previous Addresses in Past 1 Year ({{ application.addressDetails.previousAddresses.length }}):</span>
+            <ul class="mini-list">
+              <li *ngFor="let p of application.addressDetails.previousAddresses">
+                {{ p.houseNoAndStreet }}, {{ p.villageOrCity }} ({{ p.fromDate }} to {{ p.toDate }}) - PS: {{ p.policeStation }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 5. Emergency Contact -->
+        <div class="review-box">
+          <div class="box-header">
+            <h4>5. Emergency Contact</h4>
+            <button type="button" class="btn-edit-shortcut" (click)="jumpToStep(5)">✏️ Edit Step 5</button>
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Contact Person:</span>
+              <span class="val">{{ application.emergencyContact.contactName }} ({{ application.emergencyContact.relationship }})</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Emergency Mobile:</span>
+              <span class="val">{{ application.emergencyContact.mobileNumber }}</span>
+            </div>
+            <div class="info-item col-2">
+              <span class="label">Contact Address:</span>
+              <span class="val">{{ application.emergencyContact.address }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Documents Attached -->
+        <div class="review-box">
+          <div class="box-header">
+            <h4>6. Uploaded Documents & DigiLocker e-KYC</h4>
+            <button type="button" class="btn-edit-shortcut" (click)="jumpToStep(8)">✏️ Edit Step 8</button>
+          </div>
+          <div class="docs-review-list">
+            <div *ngFor="let doc of application.documents" class="doc-review-badge">
+              <span>📄 {{ doc.name }} ({{ doc.fileName }})</span>
+              <span *ngIf="doc.verifiedByDigiLocker" class="digi-tag">✓ DigiLocker Verified</span>
+            </div>
+            <div *ngIf="application.documents.length === 0" class="empty-docs">
+              No documents attached yet.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Final Statutory Acceptance Alert -->
+      <div class="final-accept-box">
+        <label class="accept-label">
+          <input type="checkbox" [(ngModel)]="hasConfirmedReview">
+          <div>
+            <strong>Final Confirmation:</strong>
+            <p>I have verified all the details above. I confirm that the information provided is accurate and corresponds to my original documents to be presented at the Passport Seva Kendra (PSK).</p>
+          </div>
+        </label>
+      </div>
+
+      <!-- Action Navigation Buttons -->
+      <div class="form-actions">
+        <button type="button" class="btn-prev" (click)="onPrev()">
+          🠐 Back to Documents
+        </button>
+        <button 
+          type="button" 
+          class="btn-submit-final" 
+          [disabled]="!hasConfirmedReview" 
+          (click)="onSubmit()">
+          ✓ Submit Application & Generate ARN
+        </button>
+      </div>
+    </div>

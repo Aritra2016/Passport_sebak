@@ -1,0 +1,139 @@
+<div class="application-wizard-page" id="main-content">
+      <div class="wizard-container">
+        <!-- Top Application Status Bar -->
+        <div class="wizard-top-bar">
+          <div class="app-id-tag">
+            <span class="label">Application Reference:</span>
+            <span class="arn-badge">{{ currentDraft.arn }}</span>
+            <span class="draft-badge" *ngIf="currentDraft.status === 'DRAFT'">DRAFT SAVED</span>
+          </div>
+
+          <div class="wizard-top-actions">
+            <button type="button" class="btn-save-draft" (click)="manualSaveDraft()">
+              💾 Save Draft
+            </button>
+            <button type="button" class="btn-exit" (click)="exitToDashboard()">
+              Exit to Dashboard
+            </button>
+          </div>
+        </div>
+
+        <!-- 9-Step Stepper Header -->
+        <app-stepper
+          [activeStep]="currentStep"
+          [maxReachedStep]="maxReachedStep"
+          (stepChange)="onStepperStepChange($event)">
+        </app-stepper>
+
+        <!-- Enterprise Sub-Tabs Bar (Matching EDE Dashboard Reference) -->
+        <div class="enterprise-subtabs">
+          <button 
+            type="button" 
+            *ngFor="let tab of subTabs" 
+            class="enterprise-tab-pill" 
+            [class.active]="currentStep === tab.step"
+            (click)="onStepperStepChange(tab.step)">
+            <span *ngIf="currentStep === tab.step">&#10003;</span>
+            {{ tab.step }}. {{ tab.title }}
+          </button>
+        </div>
+
+        <!-- Customer Input Questionnaire Banner (Matching Reference Image 1) -->
+        <div class="customer-info-banner">
+          <h2 class="form-title">Customer Input Questionnaire</h2>
+          <p class="form-note">Note: Most fields are prefilled with dummy data. Please review and update them as needed.</p>
+        </div>
+
+        <!-- Dynamic Steps Container -->
+        <div class="step-content-area">
+          <!-- Step 1: Service Type -->
+          <app-step1-service-type
+            *ngIf="currentStep === 1"
+            [initialData]="currentDraft.serviceType"
+            (stepComplete)="onStep1Complete($event)">
+          </app-step1-service-type>
+
+          <!-- Step 2: Personal Details -->
+          <app-step2-personal-details
+            *ngIf="currentStep === 2"
+            [initialData]="currentDraft.personalDetails"
+            (prevStep)="prevStep()"
+            (stepComplete)="onStep2Complete($event)">
+          </app-step2-personal-details>
+
+          <!-- Step 3: Family Details -->
+          <app-step3-family-details
+            *ngIf="currentStep === 3"
+            [initialData]="currentDraft.familyDetails"
+            (prevStep)="prevStep()"
+            (stepComplete)="onStep3Complete($event)">
+          </app-step3-family-details>
+
+          <!-- Step 4: Residential Address Details -->
+          <app-step4-address-details
+            *ngIf="currentStep === 4"
+            [initialData]="currentDraft.addressDetails"
+            (prevStep)="prevStep()"
+            (stepComplete)="onStep4Complete($event)">
+          </app-step4-address-details>
+
+          <!-- Step 5: Emergency Contact -->
+          <app-step5-emergency-contact
+            *ngIf="currentStep === 5"
+            [initialData]="currentDraft.emergencyContact"
+            (prevStep)="prevStep()"
+            (stepComplete)="onStep5Complete($event)">
+          </app-step5-emergency-contact>
+
+          <!-- Step 6: Previous Passport Details -->
+          <app-step6-previous-passport
+            *ngIf="currentStep === 6"
+            [initialData]="currentDraft.previousPassport"
+            [serviceType]="currentDraft.serviceType"
+            (prevStep)="prevStep()"
+            (stepComplete)="onStep6Complete($event)">
+          </app-step6-previous-passport>
+
+          <!-- Step 7: Statutory Declarations -->
+          <app-step7-declarations
+            *ngIf="currentStep === 7"
+            [initialData]="currentDraft.declarations"
+            (prevStep)="prevStep()"
+            (stepComplete)="onStep7Complete($event)">
+          </app-step7-declarations>
+
+          <!-- Step 8: Document Upload & DigiLocker -->
+          <app-step8-documents
+            *ngIf="currentStep === 8"
+            [initialDocs]="currentDraft.documents"
+            (prevStep)="prevStep()"
+            (stepComplete)="onStep8Complete($event)">
+          </app-step8-documents>
+
+          <!-- Step 9: Final Review & Submission -->
+          <app-step9-review
+            *ngIf="currentStep === 9"
+            [application]="currentDraft"
+            (editStep)="currentStep = $event"
+            (prevStep)="prevStep()"
+            (submitFinal)="onSubmitFinal()">
+          </app-step9-review>
+        </div>
+      </div>
+
+      <!-- Save Draft Alert Modal (Matching EDE Reference Image 6) -->
+      <div class="alert-modal-backdrop" *ngIf="showDraftAlertModal">
+        <div class="alert-modal-dialog">
+          <div class="alert-modal-header">
+            <h4>Alert</h4>
+          </div>
+          <div class="alert-modal-body">
+            <p>Your Passport Application details have been saved to draft.</p>
+            <p class="draft-id-highlight">Draft ID: {{ currentDraft.arn }}</p>
+          </div>
+          <div class="alert-modal-footer">
+            <button type="button" class="btn-alert-ok" (click)="showDraftAlertModal = false">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>

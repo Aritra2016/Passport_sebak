@@ -1,1 +1,470 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --navy-primary: #1a365d;
+  --navy-dark: #0d3b66;
+  --saffron-primary: #f47920;
+  --saffron-light: #ff9933;
+  --emerald-green: #138808;
+  --bg-body: #f4f6f9;
+  --bg-card: #ffffff;
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+}
+
+/* High Contrast Mode for Government Accessibility Guidelines (GIGW) */
+body.high-contrast {
+  --navy-primary: #fde047;
+  --navy-dark: #facc15;
+  --saffron-primary: #fbbf24;
+  --saffron-light: #fef08a;
+  --emerald-green: #4ade80;
+  --bg-body: #000000;
+  --bg-card: #121212;
+  --border-color: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #fef08a;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.high-contrast .step-card,
+body.high-contrast .dashboard-card,
+body.high-contrast .kendra-card,
+body.high-contrast .review-box,
+body.high-contrast .filter-card,
+body.high-contrast .calendar-card,
+body.high-contrast .time-picker-card,
+body.high-contrast .fee-breakdown-card,
+body.high-contrast .gateway-card,
+body.high-contrast .pipeline-card,
+body.high-contrast .application-summary-card,
+body.high-contrast .search-card,
+body.high-contrast .content-section,
+body.high-contrast .auth-card {
+  background-color: #121212 !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+body.high-contrast input,
+body.high-contrast select,
+body.high-contrast textarea {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+body.high-contrast a,
+body.high-contrast button {
+  color: #fde047;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Accessible outline on focus */
+:focus-visible {
+  outline: 3px solid var(--saffron-primary);
+  outline-offset: 2px;
+}
+
+/* Button & Link reset */
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ==========================================================================
+   ENTERPRISE PRODUCTION STYLES (MATCHING REFERENCE APP: EDE-DASHBOARD-WEB)
+   ========================================================================== */
+
+/* --- 1. Customer Input Questionnaire Subtabs & Notice Banner --- */
+.customer-info-banner {
+  background: #ffffff;
+  border-left: 4px solid #0082f0;
+  border: 1px solid #d9e2ec;
+  border-left: 5px solid #0082f0;
+  border-radius: 6px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.customer-info-banner .form-title {
+  margin: 0 0 6px 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #102a43;
+}
+
+.customer-info-banner .form-note {
+  margin: 0;
+  font-size: 13.5px;
+  color: #486581;
+  font-style: normal;
+}
+
+.enterprise-subtabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.enterprise-tab-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.enterprise-tab-pill:hover {
+  background-color: #218838;
+}
+
+.enterprise-tab-pill.active {
+  background-color: #0082f0;
+  box-shadow: 0 2px 6px rgba(0, 130, 240, 0.35);
+}
+
+/* --- 2. Accordion Lines Structure (Matching ip-vlan.component.html) --- */
+.accordion.lines {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.accordion.lines ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.accordion.lines ul li {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.accordion.lines ul li:last-child {
+  border-bottom: none;
+}
+
+.accordion.lines .title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background-color: #f8fafc;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+
+.accordion.lines .title:hover {
+  background-color: #f1f5f9;
+}
+
+.accordion.lines .title .icon {
+  font-size: 12px;
+  color: #64748b;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.accordion.lines .title .icon.expanded {
+  transform: rotate(180deg);
+}
+
+.accordion.lines .content {
+  padding: 16px 18px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Sub-accordion nested styling */
+.accordion.lines .content .accordion.lines {
+  margin: 10px 0;
+  border: 1px solid #e2e8f0;
+}
+
+.accordion.lines .content .accordion.lines .title {
+  background-color: #f1f5f9;
+  font-size: 13.5px;
+  padding: 10px 14px;
+}
+
+/* --- 3. Enterprise Data Table (ip-related-table) --- */
+.ip-related-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  border: 1px solid #cbd5e1;
+}
+
+.ip-related-table thead tr.sub-header-design {
+  background-color: #f1f5f9;
+  border-bottom: 2px solid #cbd5e1;
+}
+
+.ip-related-table th.column.md-3.filled {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 700;
+  color: #334155;
+  border-right: 1px solid #e2e8f0;
+  position: relative;
+}
+
+.ip-related-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+.ip-related-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+.label-record-vlan-text,
+.label-record-vlan {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.vlan-hover-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.required {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+/* Tooltip info icon */
+.icon.icon-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #0082f0;
+  color: #ffffff;
+  font-size: 11px;
+  font-family: serif;
+  font-style: italic;
+  cursor: pointer;
+  position: relative;
+  margin-left: 4px;
+}
+
+.icon.icon-info .tooltip1 {
+  visibility: hidden;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1e293b;
+  color: #ffffff;
+  text-align: center;
+  padding: 5px 9px;
+  border-radius: 4px;
+  font-size: 11.5px;
+  font-style: normal;
+  font-family: inherit;
+  white-space: nowrap;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.icon.icon-info:hover .tooltip1 {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Tag Badges with 'x' (Matching INT x, Static With BFD x, evip/evip_sh x) */
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #0082f0;
+  color: #ffffff;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+.tag-badge.tag-green {
+  background-color: #28a745;
+}
+
+.tag-badge.tag-gray {
+  background-color: #64748b;
+}
+
+.tag-badge .tag-close {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.tag-badge .tag-close:hover {
+  color: #ffcccc;
+}
+
+/* No-data message row */
+.row.no-data-message {
+  padding: 20px;
+  text-align: center;
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+
+.na-row {
+  margin: 0;
+  font-size: 13.5px;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* --- 4. Alert Modal Popup (Matching Image 6 Save Draft Alert) --- */
+.alert-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.alert-modal-dialog {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 440px;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+}
+
+.alert-modal-header {
+  background: #f8fafc;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alert-modal-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.alert-modal-body {
+  padding: 22px 20px;
+  font-size: 14px;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.alert-modal-body .draft-id-highlight {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0082f0;
+  margin-top: 8px;
+}
+
+.alert-modal-footer {
+  padding: 12px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-alert-ok {
+  background-color: #0082f0;
+  color: #ffffff;
+  border: none;
+  padding: 7px 24px;
+  border-radius: 4px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-alert-ok:hover {
+  background-color: #0069c2;
+}
+

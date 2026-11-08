@@ -1,0 +1,222 @@
+<div class="step-card">
+  <div class="step-header">
+    <span class="step-badge">Step 6 of 9</span>
+    <h3>Previous Passport & Application History</h3>
+    <p class="step-subtitle">Provide details of any past passport held or any past passport applications submitted in India using dynamic form arrays.</p>
+  </div>
+
+  <form [formGroup]="form" class="step-form">
+
+    <!-- Accordion Section 1: Previously Held Passport -->
+    <div class="accordion lines">
+      <ul>
+        <li>
+          <div role="button" class="title" tabindex="0" (click)="toggleSection('held')">
+            <span>#1 Previously Held Indian Passport Details</span>
+            <span class="icon" [ngClass]="{'expanded': heldPassportOpen}">&#9660;</span>
+          </div>
+          <div class="content" *ngIf="heldPassportOpen">
+            <div class="toggle-group">
+              <label class="toggle-question">Have you ever held an Indian Passport before?</label>
+              <div class="radio-inline">
+                <label><input type="radio" [value]="true" formControlName="hasHeldPassport" (change)="onInputChange($event, 'hasHeldPassport')"> Yes</label>
+                <label><input type="radio" [value]="false" formControlName="hasHeldPassport" (change)="onInputChange($event, 'hasHeldPassport')"> No</label>
+              </div>
+            </div>
+
+            <!-- Empty state fallback matching reference na-row -->
+            <div class="row no-data-message" *ngIf="!form.get('hasHeldPassport')?.value">
+              <div class="column md-6 filled">
+                <p class="na-row">No previous passport declared. Select 'Yes' above if applying for re-issue or previously held a passport.</p>
+              </div>
+            </div>
+
+            <!-- Conditional Previous Passport Particulars -->
+            <div *ngIf="form.get('hasHeldPassport')?.value" class="mt-3">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="ppNo">Previous Passport Number <span class="required">*</span></label>
+                  <input 
+                    id="ppNo" 
+                    type="text" 
+                    formControlName="previousPassportNumber" 
+                    appUpperCase 
+                    class="form-control" 
+                    placeholder="e.g. Z3918294"
+                    maxlength="8"
+                    (input)="onInputChange($event, 'previousPassportNumber')">
+                  <div *ngIf="isInvalid('previousPassportNumber')" class="field-error">Passport Number is required.</div>
+                </div>
+
+                <div class="form-group">
+                  <label for="poi">Place of Issue <span class="required">*</span></label>
+                  <input 
+                    id="poi" 
+                    type="text" 
+                    formControlName="placeOfIssue" 
+                    appUpperCase 
+                    class="form-control" 
+                    placeholder="e.g. RPO DELHI"
+                    (input)="onInputChange($event, 'placeOfIssue')">
+                  <div *ngIf="isInvalid('placeOfIssue')" class="field-error">Place of issue is required.</div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="doi">Date of Issue <span class="required">*</span></label>
+                  <input 
+                    id="doi" 
+                    type="date" 
+                    formControlName="dateOfIssue" 
+                    class="form-control"
+                    (change)="onInputChange($event, 'dateOfIssue')">
+                  <div *ngIf="isInvalid('dateOfIssue')" class="field-error">Date of issue is required.</div>
+                </div>
+
+                <div class="form-group">
+                  <label for="doe">Date of Expiry <span class="required">*</span></label>
+                  <input 
+                    id="doe" 
+                    type="date" 
+                    formControlName="dateOfExpiry" 
+                    class="form-control"
+                    (change)="onInputChange($event, 'dateOfExpiry')">
+                  <div *ngIf="isInvalid('dateOfExpiry')" class="field-error">Date of expiry is required.</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="fNo">File Number (Optional)</label>
+                <input 
+                  id="fNo" 
+                  type="text" 
+                  formControlName="fileNumber" 
+                  appUpperCase 
+                  class="form-control" 
+                  placeholder="e.g. DL1069820194821"
+                  (input)="onInputChange($event, 'fileNumber')">
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Accordion Section 2: Past Applied But Not Issued (FormArray Table) -->
+    <div class="accordion lines">
+      <ul>
+        <li>
+          <div role="button" class="title" tabindex="0" (click)="toggleSection('applied')">
+            <span>#2 Past Applications Submitted But Not Issued (FormArray)</span>
+            <span class="icon" [ngClass]="{'expanded': pastAppliedOpen}">&#9660;</span>
+          </div>
+          <div class="content" *ngIf="pastAppliedOpen">
+            <div class="toggle-group">
+              <label class="toggle-question">Have you ever applied for a passport, but not issued?</label>
+              <div class="radio-inline">
+                <label><input type="radio" [value]="true" formControlName="hasAppliedAndNotIssued" (change)="onInputChange($event, 'hasAppliedAndNotIssued')"> Yes</label>
+                <label><input type="radio" [value]="false" formControlName="hasAppliedAndNotIssued" (change)="onInputChange($event, 'hasAppliedAndNotIssued')"> No</label>
+              </div>
+            </div>
+
+            <!-- Empty state fallback matching reference na-row -->
+            <div class="row no-data-message" *ngIf="!form.get('hasAppliedAndNotIssued')?.value || pastApplicationsArray.length === 0">
+              <div class="column md-6 filled">
+                <p class="na-row">No previous unissued applications reported. Select 'Yes' above if any previous application was closed or rejected.</p>
+              </div>
+            </div>
+
+            <!-- Dynamic FormArray Table (Matching ip-related-table in EDE reference) -->
+            <div *ngIf="form.get('hasAppliedAndNotIssued')?.value && pastApplicationsArray.length > 0" class="mt-3">
+              <div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+                <button type="button" class="btn-add-item" (click)="addPastApplication()">+ Add Past Application Record</button>
+              </div>
+
+              <table class="ip-related-table">
+                <thead>
+                  <tr class="sub-header-design">
+                    <th class="column md-3 filled" style="width: 70px;">Record #</th>
+                    <th class="column md-3 filled">
+                      <label class="label-record-vlan">
+                        File Number&nbsp;<span class="required">*</span>
+                        <i class="icon icon-info" tabindex="0">
+                          <div class="tooltip1">Previous file reference number from acknowledgment slip</div>
+                        </i>
+                      </label>
+                    </th>
+                    <th class="column md-3 filled" style="width: 120px;">
+                      <label class="label-record-vlan">
+                        Year&nbsp;<span class="required">*</span>
+                      </label>
+                    </th>
+                    <th class="column md-3 filled">
+                      <label class="label-record-vlan">
+                        Passport Office (PSK)&nbsp;<span class="required">*</span>
+                      </label>
+                    </th>
+                    <th class="column md-3 filled">Reason for Non-Issuance</th>
+                    <th class="column md-3 filled" style="width: 90px; text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="pastApplications">
+                  <tr *ngFor="let appGroup of pastApplicationsArray.controls; let aIdx = index" [formGroupName]="aIdx">
+                    <td style="font-weight: 700; color: #64748b; text-align: center;">#{{ aIdx + 1 }}</td>
+                    <td>
+                      <input 
+                        type="text" 
+                        formControlName="fileNumber" 
+                        appUpperCase 
+                        class="form-control" 
+                        placeholder="e.g. DL106..."
+                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].fileNumber')">
+                    </td>
+                    <td>
+                      <input 
+                        type="text" 
+                        formControlName="appliedYear" 
+                        maxlength="4" 
+                        class="form-control" 
+                        placeholder="YYYY"
+                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].appliedYear')">
+                    </td>
+                    <td>
+                      <input 
+                        type="text" 
+                        formControlName="appliedPassportOffice" 
+                        appUpperCase 
+                        class="form-control" 
+                        placeholder="e.g. RPO DELHI"
+                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].appliedPassportOffice')">
+                    </td>
+                    <td>
+                      <input 
+                        type="text" 
+                        formControlName="appliedReason" 
+                        class="form-control" 
+                        placeholder="e.g. Incomplete address documents"
+                        (input)="onInputChange($event, 'pastApps[' + aIdx + '].appliedReason')">
+                    </td>
+                    <td style="text-align: center;">
+                      <button type="button" class="btn-remove-item" (click)="removePastApplication(aIdx)" title="Remove Application">✕ Remove</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="form-actions">
+      <button type="button" class="btn-prev" (click)="onPrev()">
+        🠐 Back to Step 5
+      </button>
+      <button type="button" class="btn-save-next" (click)="onNext()">
+        Save & Continue to Step 7 ➔
+      </button>
+    </div>
+  </form>
+</div>

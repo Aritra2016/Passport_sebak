@@ -1,0 +1,258 @@
+<div class="step-card">
+  <div class="step-header">
+    <span class="step-badge">Step 3 of 9</span>
+    <h3>Family Details (FormArray)</h3>
+    <p class="step-subtitle">Enter parentage, legal guardian, and spouse details as per birth certificates or
+      matrimonial records using dynamic form arrays.</p>
+  </div>
+
+  <form [formGroup]="form" class="step-form">
+    <!-- Single Parent Option Toggle -->
+    <div class="single-parent-box">
+      <div class="toggle-row">
+        <div>
+          <label class="toggle-title">Single Parent Application?</label>
+          <p class="toggle-desc">If applying under single parent guardianship (e.g. legal custody, deceased parent, or
+            adoptive parent).</p>
+        </div>
+        <div class="radio-inline">
+          <label><input type="radio" [value]="true" formControlName="isSingleParent"
+              (change)="onInputChange($event, 'isSingleParent')"> Yes</label>
+          <label><input type="radio" [value]="false" formControlName="isSingleParent"
+              (change)="onInputChange($event, 'isSingleParent')"> No</label>
+        </div>
+      </div>
+
+      <div *ngIf="form.get('isSingleParent')?.value" class="single-type-selector mt-2">
+        <label class="mr-3"><strong>Specify Parent:</strong></label>
+        <label class="mr-3"><input type="radio" value="MOTHER_ONLY" formControlName="singleParentType"
+            (change)="onInputChange($event, 'singleParentType')"> Mother Only (Father name not applicable)</label>
+        <label><input type="radio" value="FATHER_ONLY" formControlName="singleParentType"
+            (change)="onInputChange($event, 'singleParentType')"> Father Only (Mother name not applicable)</label>
+      </div>
+    </div>
+
+          <!-- Accordion Section 1: Father's Legal Particulars -->
+          <div class="accordion lines" *ngIf="isMemberVisible(0)">
+            <ul>
+              <li>
+                <div role="button" class="title" tabindex="0" (click)="toggleSection('father')">
+                  <span>#1 Father's Legal Particulars</span>
+                  <span class="icon" [ngClass]="{'expanded': fatherOpen}">&#9660;</span>
+                </div>
+                <div class="content" *ngIf="fatherOpen" formArrayName="familyMembers">
+                  <div [formGroupName]="0" class="form-row">
+                    <div class="form-group">
+                      <label for="fatherGName">
+                        Given Name <span class="required"
+                          *ngIf="familyMembersArray.at(0).get('givenName')?.validator">*</span>
+                      </label>
+                      <input id="fatherGName" type="text" formControlName="givenName" appUpperCase class="form-control"
+                        placeholder="e.g. RAMESH CHANDER" (input)="onInputChange($event, 'father.givenName')">
+                      <div
+                        *ngIf="familyMembersArray.at(0).get('givenName')?.invalid && (familyMembersArray.at(0).get('givenName')?.dirty || familyMembersArray.at(0).get('givenName')?.touched)"
+                        class="field-error">
+                        Father's Given Name is required.
+                      </div>
+                    </div>
+
+                        <div class="form-group">
+                          <label for="fatherSName">
+                            Surname <span class="required"
+                              *ngIf="familyMembersArray.at(0).get('surname')?.validator">*</span>
+                          </label>
+                          <input id="fatherSName" type="text" formControlName="surname" appUpperCase
+                            class="form-control" placeholder="e.g. SHARMA"
+                            (input)="onInputChange($event, 'father.surname')">
+                          <div
+                            *ngIf="familyMembersArray.at(0).get('surname')?.invalid && (familyMembersArray.at(0).get('surname')?.dirty || familyMembersArray.at(0).get('surname')?.touched)"
+                            class="field-error">
+                            Father's Surname is required.
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="fatherNat">Nationality</label>
+                          <input id="fatherNat" type="text" formControlName="nationality" appUpperCase
+                            class="form-control" placeholder="INDIAN"
+                            (input)="onInputChange($event, 'father.nationality')">
+                        </div>
+                      </div>
+                    </div>
+              </li>
+            </ul>
+          </div>
+
+                <!-- Accordion Section 2: Mother's Legal Particulars -->
+                <div class="accordion lines" *ngIf="isMemberVisible(1)">
+                  <ul>
+                    <li>
+                      <div role="button" class="title" tabindex="0" (click)="toggleSection('mother')">
+                        <span>#2 Mother's Legal Particulars</span>
+                        <span class="icon" [ngClass]="{'expanded': motherOpen}">&#9660;</span>
+                      </div>
+                      <div class="content" *ngIf="motherOpen" formArrayName="familyMembers">
+                        <div [formGroupName]="1" class="form-row">
+                          <div class="form-group">
+                            <label for="motherGName">
+                              Given Name <span class="required"
+                                *ngIf="familyMembersArray.at(1).get('givenName')?.validator">*</span>
+                            </label>
+                            <input id="motherGName" type="text" formControlName="givenName" appUpperCase
+                              class="form-control" placeholder="e.g. SUNITA"
+                              (input)="onInputChange($event, 'mother.givenName')">
+                            <div
+                              *ngIf="familyMembersArray.at(1).get('givenName')?.invalid && (familyMembersArray.at(1).get('givenName')?.dirty || familyMembersArray.at(1).get('givenName')?.touched)"
+                              class="field-error">
+                              Mother's Given Name is required.
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="motherSName">
+                              Surname <span class="required"
+                                *ngIf="familyMembersArray.at(1).get('surname')?.validator">*</span>
+                            </label>
+                            <input id="motherSName" type="text" formControlName="surname" appUpperCase
+                              class="form-control" placeholder="e.g. SHARMA"
+                              (input)="onInputChange($event, 'mother.surname')">
+                            <div
+                              *ngIf="familyMembersArray.at(1).get('surname')?.invalid && (familyMembersArray.at(1).get('surname')?.dirty || familyMembersArray.at(1).get('surname')?.touched)"
+                              class="field-error">
+                              Mother's Surname is required.
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="motherNat">Nationality</label>
+                            <input id="motherNat" type="text" formControlName="nationality" appUpperCase
+                              class="form-control" placeholder="INDIAN"
+                              (input)="onInputChange($event, 'mother.nationality')">
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                    <!-- Accordion Section 3: Additional Relatives, Spouse & Legal Guardians (FormArray) -->
+                    <div class="accordion lines">
+                      <ul>
+                        <li>
+                          <div role="button" class="title" tabindex="0" (click)="toggleSection('additional')">
+                            <span>#3 Additional Family Members, Guardians & Spouse (FormArray)</span>
+                            <span class="icon" [ngClass]="{'expanded': additionalOpen}">&#9660;</span>
+                          </div>
+                          <div class="content" *ngIf="additionalOpen">
+                            <!-- Action Toolbar to dynamically add family members -->
+                            <div
+                              style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                              <span style="font-weight: 600; font-size: 13.5px; color: #475569;">Add Additional
+                                Relatives / Guardians:</span>
+                              <div style="display: flex; gap: 8px;">
+                                <button type="button" class="btn-add-item" (click)="addMember('LEGAL_GUARDIAN')">+ Add
+                                  Legal Guardian</button>
+                                <button type="button" class="btn-add-item" (click)="addMember('SPOUSE')">+ Add
+                                  Spouse</button>
+                                <button type="button" class="btn-add-item" (click)="addMember('OTHER')">+ Add Other
+                                  Relative</button>
+                              </div>
+                            </div>
+
+                              <!-- Empty state fallback matching reference na-row -->
+                              <div class="row no-data-message" *ngIf="familyMembersArray.length <= 2">
+                                <div class="column md-6 filled">
+                                  <p class="na-row">No additional relatives or spouse added. Use the buttons above to
+                                    append records to this FormArray.</p>
+                                </div>
+                              </div>
+
+                              <!-- Enterprise Data Table (Matching ip-related-table in EDE reference) -->
+                              <div *ngIf="familyMembersArray.length > 2" class="mt-2">
+                                <table class="ip-related-table">
+                                  <thead>
+                                    <tr class="sub-header-design">
+                                      <th class="column md-3 filled" style="width: 70px;">Record #</th>
+                                      <th class="column md-3 filled" style="width: 170px;">
+                                        <label class="label-record-vlan">
+                                          Relation Type&nbsp;<span class="required">*</span>
+                                          <i class="icon icon-info" tabindex="0">
+                                            <div class="tooltip1">Legal relationship to applicant</div>
+                                          </i>
+                                        </label>
+                                      </th>
+                                      <th class="column md-3 filled">
+                                        <label class="label-record-vlan">
+                                          Given Name&nbsp;<span class="required">*</span>
+                                          <i class="icon icon-info" tabindex="0">
+                                            <div class="tooltip1">First and middle legal name</div>
+                                          </i>
+                                        </label>
+                                      </th>
+                                      <th class="column md-3 filled">
+                                        <label class="label-record-vlan">
+                                          Surname
+                                          <i class="icon icon-info" tabindex="0">
+                                            <div class="tooltip1">Surname or family name</div>
+                                          </i>
+                                        </label>
+                                      </th>
+                                      <th class="column md-3 filled" style="width: 120px;">Nationality</th>
+                                      <th class="column md-3 filled" style="width: 100px; text-align: center;">Actions
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody formArrayName="familyMembers">
+                                    <ng-container
+                                      *ngFor="let memberGroup of familyMembersArray.controls; let i = index">
+                                      <tr *ngIf="i >= 2 && isMemberVisible(i)" [formGroupName]="i">
+                                        <td style="font-weight: 700; color: #64748b; text-align: center;">#{{ i + 1 }}
+                                        </td>
+                                        <td>
+                                          <span class="tag-badge"
+                                            [ngClass]="memberGroup.get('relationship')?.value === 'SPOUSE' ? 'tag-green' : ''">
+                                            {{ getLabel(memberGroup.get('relationship')?.value) }}
+                                            <button type="button" class="tag-close" (click)="removeMember(i)"
+                                              title="Remove record">✕</button>
+                                          </span>
+                                        </td>
+                                        <td>
+                                          <input type="text" formControlName="givenName" appUpperCase
+                                            class="form-control" placeholder="Given name"
+                                            (input)="onInputChange($event, 'family[' + i + '].givenName')">
+                                        </td>
+                                        <td>
+                                          <input type="text" formControlName="surname" appUpperCase class="form-control"
+                                            placeholder="Surname"
+                                            (input)="onInputChange($event, 'family[' + i + '].surname')">
+                                        </td>
+                                        <td>
+                                          <input type="text" formControlName="nationality" appUpperCase
+                                            class="form-control" placeholder="INDIAN"
+                                            (input)="onInputChange($event, 'family[' + i + '].nationality')">
+                                        </td>
+                                        <td style="text-align: center;">
+                                          <button type="button" class="btn-remove-item" (click)="removeMember(i)"
+                                            title="Remove Record">✕ Remove</button>
+                                        </td>
+                                      </tr>
+                                    </ng-container>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+      </li>
+      </ul>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="form-actions">
+      <button type="button" class="btn-prev" (click)="onPrev()">
+        🠐 Back to Step 2
+      </button>
+      <button type="button" class="btn-save-next" (click)="onNext()">
+        Save & Continue to Step 4 ➔
+      </button>
+    </div>
+  </form>
+</div>

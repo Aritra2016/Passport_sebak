@@ -1,0 +1,113 @@
+<div class="auth-page">
+  <div class="auth-container">
+    <!-- Official Banner -->
+    <div class="auth-card">
+      <div class="auth-header">
+        <span class="emblem-icon">🇮🇳</span>
+        <h2>Passport Seva Citizen Portal</h2>
+        <p>PSP Division, Ministry of External Affairs, Government of India</p>
+      </div>
+
+      <!-- Quick Demo Switcher Cards -->
+      <div class="demo-box">
+        <span class="demo-badge">🚀 1-Click Quick Demo Sign-in:</span>
+        <div class="demo-btn-grid">
+          <button type="button" class="btn-demo-role" (click)="quickLogin('CITIZEN')">
+            <span class="role-icon">👤</span>
+            <div>
+              <strong>Applicant (Citizen)</strong>
+              <small>Apply, schedule & track</small>
+            </div>
+          </button>
+          <button type="button" class="btn-demo-role" (click)="quickLogin('PSK_OFFICER')">
+            <span class="role-icon">🏢</span>
+            <div>
+              <strong>PSK Officer</strong>
+              <small>Biometric & review queue</small>
+            </div>
+          </button>
+          <button type="button" class="btn-demo-role" (click)="quickLogin('POLICE_VERIFIER')">
+            <span class="role-icon">👮</span>
+            <div>
+              <strong>Police Verifier</strong>
+              <small>Field verification report</small>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="auth-divider">
+        <span>OR SIGN IN WITH CREDENTIALS</span>
+      </div>
+
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="form-group">
+          <label for="loginId">Login ID / Registered Email ID / Mobile <span class="req">*</span></label>
+          <input id="loginId" type="text" formControlName="loginId" autocomplete="username" class="form-control"
+          placeholder="Enter email or 10-digit mobile number"
+          (input)="onInputChange($event, 'loginId')">
+          <div *ngIf="loginForm.get('loginId')?.touched && loginForm.get('loginId')?.invalid" class="field-error">
+            Please enter your registered Login ID, Email, or Mobile.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="fullName">Applicant Full Name (Optional / Auto-derived if empty)</label>
+          <input id="fullName" type="text" formControlName="fullName" class="form-control"
+          placeholder="e.g. Aritra Khatua"
+          (input)="onInputChange($event, 'fullName')">
+        </div>
+
+        <!-- Auth Mode Selector -->
+        <div class="auth-mode-toggle">
+          <label class="radio-label">
+            <input type="radio" value="PASSWORD" formControlName="authMode"> Password
+          </label>
+          <label class="radio-label">
+            <input type="radio" value="OTP" formControlName="authMode"> OTP to Mobile
+          </label>
+        </div>
+
+        <!-- Password field -->
+        <div class="form-group" *ngIf="loginForm.get('authMode')?.value === 'PASSWORD'">
+          <label for="password">Password <span class="req">*</span></label>
+          <input id="password" type="password" formControlName="password" autocomplete="current-password"
+          placeholder="Enter password"
+          (input)="onInputChange($event, 'password')">
+        </div>
+
+        <!-- OTP field -->
+        <div class="form-group" *ngIf="loginForm.get('authMode')?.value === 'OTP'">
+          <div class="otp-header">
+            <label for="otp">One Time Password (OTP) <span class="req">*</span></label>
+            <button type="button" class="btn-resend-otp" (click)="generateOtp()">Send OTP</button>
+          </div>
+          <input id="otp" type="text" formControlName="otp" autocomplete="one-time-code" class="form-control"
+            placeholder="Enter 6-digit OTP (e.g. 123456)" maxlength="6">
+          <span class="helper-text" *ngIf="otpSent">✓ OTP sent to your registered mobile. Use <strong>123456</strong>
+            for testing.</span>
+        </div>
+
+        <!-- Portal Role selection -->
+        <div class="form-group">
+          <label for="role">Portal Access Role</label>
+          <select id="role" formControlName="role" class="form-control">
+            <option value="CITIZEN">Citizen / Passport Applicant</option>
+            <option value="PSK_OFFICER">PSK Processing Officer</option>
+            <option value="POLICE_VERIFIER">Police Verification Authority</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-primary-gov" [disabled]="loginForm.invalid">
+          Sign In to Passport Seva
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <span>New user on this portal?</span>
+        <a routerLink="/auth/register" class="link-register">Register Citizen Account</a>
+      </div>
+    </div>
+  </div>
+</div>

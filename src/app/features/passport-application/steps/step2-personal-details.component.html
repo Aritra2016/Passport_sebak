@@ -1,0 +1,455 @@
+<div class="step-card">
+  <div class="step-header">
+    <span class="step-badge">Step 2 of 9</span>
+    <h3>Applicant Personal Particulars</h3>
+    <p class="step-subtitle">Please enter your legal name and demographic details as per official government records.</p>
+  </div>
+
+  <form [formGroup]="form" class="step-form">
+
+    <!-- Accordion Section 1: Primary Demographic Particulars -->
+    <div class="accordion lines">
+      <ul>
+        <li>
+          <div role="button" class="title" tabindex="0" (click)="toggleSection('demographics')">
+            <span>Primary Demographic Particulars</span>
+            <span class="icon" [ngClass]="{'expanded': demographicsOpen}">&#9660;</span>
+          </div>
+          <div class="content" *ngIf="demographicsOpen">
+            <!-- Names Row -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="givenName">Given Name (First & Middle Name) <span class="required">*</span></label>
+                <input 
+                  id="givenName" 
+                  type="text" 
+                  formControlName="givenName" 
+                  appUpperCase
+                  class="form-control" 
+                  placeholder="e.g. VIKRAMADITYA"
+                  (input)="onInputChange($event, 'givenName')">
+                <div *ngIf="isInvalid('givenName')" class="field-error">Given Name is mandatory.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="surname">Surname <span class="required">*</span></label>
+                <input 
+                  id="surname" 
+                  type="text" 
+                  formControlName="surname" 
+                  appUpperCase
+                  class="form-control" 
+                  placeholder="e.g. SHARMA"
+                  (input)="onInputChange($event, 'surname')">
+                <div *ngIf="isInvalid('surname')" class="field-error">Surname is mandatory.</div>
+              </div>
+            </div>
+
+            <!-- Date of Birth, Gender, Marital Status -->
+            <div class="form-row-3">
+              <div class="form-group">
+                <div class="label-with-calc">
+                  <label for="dob">Date of Birth <span class="required">*</span></label>
+                  <span class="age-badge" *ngIf="applicantAge !== null">Age: {{ applicantAge }} yrs ({{ applicantAge < 18 ? 'Minor' : 'Adult' }})</span>
+                </div>
+                <input 
+                  id="dob" 
+                  type="date" 
+                  formControlName="dateOfBirth" 
+                  class="form-control"
+                  (input)="onInputChange($event, 'dateOfBirth')"
+                  (change)="onDobChange(); onInputChange($event, 'dateOfBirth')">
+                <div *ngIf="isInvalid('dateOfBirth')" class="field-error">
+                  Valid Date of Birth required (cannot be future date).
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="gender">Gender <span class="required">*</span></label>
+                <select id="gender" formControlName="gender" class="form-control" (change)="onInputChange($event, 'gender')">
+                  <option value="">-- Select Gender --</option>
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                  <option value="TRANSGENDER">Transgender</option>
+                </select>
+                <div *ngIf="isInvalid('gender')" class="field-error">Please select gender.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="maritalStatus">Marital Status <span class="required">*</span></label>
+                <select id="maritalStatus" formControlName="maritalStatus" class="form-control" (change)="onInputChange($event, 'maritalStatus')">
+                  <option value="">-- Select Marital Status --</option>
+                  <option value="SINGLE">Single</option>
+                  <option value="MARRIED">Married</option>
+                  <option value="DIVORCED">Divorced</option>
+                  <option value="WIDOWED">Widowed</option>
+                  <option value="SEPARATED">Separated</option>
+                </select>
+                <div *ngIf="isInvalid('maritalStatus')" class="field-error">Please select marital status.</div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Accordion Section 2: Place of Birth & Jurisdiction -->
+    <div class="accordion lines">
+      <ul>
+        <li>
+          <div role="button" class="title" tabindex="0" (click)="toggleSection('birth')">
+            <span>Place of Birth & Geographic Jurisdiction</span>
+            <span class="icon" [ngClass]="{'expanded': birthDetailsOpen}">&#9660;</span>
+          </div>
+          <div class="content" *ngIf="birthDetailsOpen">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="birthPlace">Place of Birth (Village / Town / City) <span class="required">*</span></label>
+                <input 
+                  id="birthPlace" 
+                  type="text" 
+                  formControlName="birthPlace" 
+                  appUpperCase 
+                  class="form-control" 
+                  placeholder="e.g. NEW DELHI"
+                  (input)="onInputChange($event, 'birthPlace')">
+                <div *ngIf="isInvalid('birthPlace')" class="field-error">Place of birth is required.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="birthDistrict">District of Birth <span class="required">*</span></label>
+                <input 
+                  id="birthDistrict" 
+                  type="text" 
+                  formControlName="birthDistrict" 
+                  appUpperCase 
+                  class="form-control" 
+                  placeholder="e.g. NEW DELHI"
+                  (input)="onInputChange($event, 'birthDistrict')">
+                <div *ngIf="isInvalid('birthDistrict')" class="field-error">District of birth is required.</div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="birthState">State / UT of Birth <span class="required">*</span></label>
+                <input 
+                  id="birthState" 
+                  type="text" 
+                  formControlName="birthState" 
+                  appUpperCase 
+                  class="form-control" 
+                  placeholder="e.g. DELHI"
+                  (input)="onInputChange($event, 'birthState')">
+                <div *ngIf="isInvalid('birthState')" class="field-error">State of birth is required.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="birthCountry">Country of Birth <span class="required">*</span></label>
+                <input 
+                  id="birthCountry" 
+                  type="text" 
+                  formControlName="birthCountry" 
+                  appUpperCase 
+                  class="form-control" 
+                  placeholder="INDIA"
+                  (input)="onInputChange($event, 'birthCountry')">
+                <div *ngIf="isInvalid('birthCountry')" class="field-error">Country of birth is required.</div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Accordion Section 3: Known Aliases (FormArray Table matching ip-related-table) -->
+    <div class="accordion lines">
+      <ul>
+        <li>
+          <div role="button" class="title" tabindex="0" (click)="toggleSection('aliases')">
+            <span>Known Aliases & Alternate Names (FormArray)</span>
+            <span class="icon" [ngClass]="{'expanded': aliasesOpen}">&#9660;</span>
+          </div>
+          <div class="content" *ngIf="aliasesOpen">
+            <div class="toggle-group">
+              <label class="toggle-question">Have you ever been known by other names (aliases)?</label>
+              <div class="radio-inline">
+                <label><input type="radio" [value]="true" formControlName="hasAlias" (change)="onInputChange($event, 'hasAlias')"> Yes</label>
+                <label><input type="radio" [value]="false" formControlName="hasAlias" (change)="onInputChange($event, 'hasAlias')"> No</label>
+              </div>
+            </div>
+
+            <!-- Empty state fallback matching reference na-row -->
+            <div class="row no-data-message" *ngIf="!form.get('hasAlias')?.value || aliasesArray.length === 0">
+              <div class="column md-6 filled">
+                <p class="na-row">No aliases declared. Select 'Yes' above to add official alias records.</p>
+              </div>
+            </div>
+
+            <!-- Dynamic FormArray Table -->
+            <div *ngIf="form.get('hasAlias')?.value && aliasesArray.length > 0" class="mt-3">
+              <div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+                <button type="button" class="btn-add-item" (click)="addAlias()">+ Add Another Alias</button>
+              </div>
+
+              <table class="ip-related-table">
+                <thead>
+                  <tr class="sub-header-design">
+                    <th class="column md-3 filled" style="width: 80px;">Record #</th>
+                    <th class="column md-3 filled">
+                      <label class="label-record-vlan">
+                        Alias Given Name&nbsp;<span class="required">*</span>
+                        <i class="icon icon-info" tabindex="0">
+                          <div class="tooltip1">Legal first and middle alias</div>
+                        </i>
+                      </label>
+                    </th>
+                    <th class="column md-3 filled">
+                      <label class="label-record-vlan">
+                        Alias Surname&nbsp;<span class="required">*</span>
+                        <i class="icon icon-info" tabindex="0">
+                          <div class="tooltip1">Legal alias surname or family name</div>
+                        </i>
+                      </label>
+                    </th>
+                    <th class="column md-3 filled" style="width: 100px; text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="aliases">
+                  <tr *ngFor="let aliasGroup of aliasesArray.controls; let aIdx = index" [formGroupName]="aIdx">
+                    <td style="font-weight: 700; color: #64748b; text-align: center;">#{{ aIdx + 1 }}</td>
+                    <td>
+                      <input 
+                        type="text" 
+                        formControlName="givenName" 
+                        appUpperCase 
+                        class="form-control" 
+                        placeholder="Alias first name"
+                        (input)="onInputChange($event, 'alias[' + aIdx + '].givenName')">
+                    </td>
+                    <td>
+                      <input 
+                        type="text" 
+                        formControlName="surname" 
+                        appUpperCase 
+                        class="form-control" 
+                        placeholder="Alias surname"
+                        (input)="onInputChange($event, 'alias[' + aIdx + '].surname')">
+                    </td>
+                    <td style="text-align: center;">
+                      <button type="button" class="btn-remove-item" (click)="removeAlias(aIdx)" title="Remove Alias">✕ Remove</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Accordion Section 4: Previous Legal Names (FormArray Table) -->
+    <div class="accordion lines">
+      <ul>
+        <li>
+          <div role="button" class="title" tabindex="0" (click)="toggleSection('prevNames')">
+            <span>Previous Legal Names (FormArray)</span>
+            <span class="icon" [ngClass]="{'expanded': prevNamesOpen}">&#9660;</span>
+          </div>
+          <div class="content" *ngIf="prevNamesOpen">
+            <div class="toggle-group">
+              <label class="toggle-question">Have you ever changed your name?</label>
+              <div class="radio-inline">
+                <label><input type="radio" [value]="true" formControlName="hasChangedName" (change)="onInputChange($event, 'hasChangedName')"> Yes</label>
+                <label><input type="radio" [value]="false" formControlName="hasChangedName" (change)="onInputChange($event, 'hasChangedName')"> No</label>
+              </div>
+            </div>
+
+            <!-- Empty state fallback matching reference na-row -->
+            <div class="row no-data-message" *ngIf="!form.get('hasChangedName')?.value || previousNamesArray.length === 0">
+              <div class="column md-6 filled">
+                <p class="na-row">No previous name changes declared. Select 'Yes' above if your name has been legally changed.</p>
+              </div>
+            </div>
+
+            <!-- Dynamic FormArray Table -->
+            <div *ngIf="form.get('hasChangedName')?.value && previousNamesArray.length > 0" class="mt-3">
+              <div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+                <button type="button" class="btn-add-item" (click)="addPreviousName()">+ Add Previous Name</button>
+              </div>
+
+              <table class="ip-related-table">
+                <thead>
+                  <tr class="sub-header-design">
+                    <th class="column md-3 filled" style="width: 80px;">Record #</th>
+                    <th class="column md-3 filled">
+                      <label class="label-record-vlan">
+                        Previous Given Name&nbsp;<span class="required">*</span>
+                        <i class="icon icon-info" tabindex="0">
+                          <div class="tooltip1">Previous legal given name prior to gazette change</div>
+                        </i>
+                      </label>
+                    </th>
+                    <th class="column md-3 filled">
+                      <label class="label-record-vlan">
+                        Previous Surname
+                        <i class="icon icon-info" tabindex="0">
+                          <div class="tooltip1">Previous surname if applicable</div>
+                        </i>
+                      </label>
+                    </th>
+                    <th class="column md-3 filled" style="width: 100px; text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="previousNames">
+                  <tr *ngFor="let prevGroup of previousNamesArray.controls; let pIdx = index" [formGroupName]="pIdx">
+                    <td style="font-weight: 700; color: #64748b; text-align: center;">#{{ pIdx + 1 }}</td>
+                    <td>
+                      <input 
+                        type="text" 
+                        formControlName="previousGivenName" 
+                        appUpperCase 
+                        class="form-control" 
+                        placeholder="Previous given name"
+                        (input)="onInputChange($event, 'previousName[' + pIdx + '].previousGivenName')">
+                    </td>
+                    <td>
+                      <input 
+                        type="text" 
+                        formControlName="previousSurname" 
+                        appUpperCase 
+                        class="form-control" 
+                        placeholder="Previous surname"
+                        (input)="onInputChange($event, 'previousName[' + pIdx + '].previousSurname')">
+                    </td>
+                    <td style="text-align: center;">
+                      <button type="button" class="btn-remove-item" (click)="removePreviousName(pIdx)" title="Remove Previous Name">✕ Remove</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Accordion Section 5: Statutory Identifiers & Non-ECR Status -->
+    <div class="accordion lines">
+      <ul>
+        <li>
+          <div role="button" class="title" tabindex="0" (click)="toggleSection('identifiers')">
+            <span>Statutory Identifiers & Non-ECR Eligibility</span>
+            <span class="icon" [ngClass]="{'expanded': identifiersOpen}">&#9660;</span>
+          </div>
+          <div class="content" *ngIf="identifiersOpen">
+            <!-- Education & Employment -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="edu">Educational Qualification <span class="required">*</span></label>
+                <select id="edu" formControlName="educationalQualification" class="form-control" (change)="onEducationChange(); onInputChange($event, 'educationalQualification')">
+                  <option value="GRADUATE_AND_ABOVE">Graduate and above</option>
+                  <option value="10TH_AND_ABOVE">10th pass and above (Matriculation)</option>
+                  <option value="BETWEEN_8TH_AND_9TH">Between 8th and 9th standard</option>
+                  <option value="7TH_OR_LESS">7th pass or less</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="emp">Employment Type <span class="required">*</span></label>
+                <select id="emp" formControlName="employmentType" class="form-control" (change)="onInputChange($event, 'employmentType')">
+                  <option value="PRIVATE">Private</option>
+                  <option value="GOVERNMENT">Government</option>
+                  <option value="PSU">Statutory Body / PSU</option>
+                  <option value="SELF_EMPLOYED">Self Employed</option>
+                  <option value="STUDENT">Student</option>
+                  <option value="HOMEMAKER">Homemaker</option>
+                  <option value="RETIRED">Retired</option>
+                  <option value="OTHERS">Others</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Non-ECR Auto-Check Banner -->
+            <div class="non-ecr-banner" [class.eligible]="form.get('isNonEcrEligible')?.value">
+              <span class="ecr-icon">ℹ️</span>
+              <div>
+                <strong>Emigration Check Not Required (Non-ECR) Category: </strong>
+                <span class="tag-badge" [ngClass]="form.get('isNonEcrEligible')?.value ? 'tag-green' : 'tag-gray'">
+                  {{ form.get('isNonEcrEligible')?.value ? 'ELIGIBLE' : 'NON-ELIGIBLE' }}
+                </span>
+                <p class="ecr-sub">Citizens with 10th standard matriculation or higher degree are automatically exempt from Emigration Check.</p>
+              </div>
+            </div>
+
+            <!-- Official Identity Numbers: PAN, Voter ID, Aadhaar -->
+            <div class="form-row-3 mt-3">
+              <div class="form-group">
+                <label for="pan">PAN Number (Optional)</label>
+                <input 
+                  id="pan" 
+                  type="text" 
+                  formControlName="panNumber" 
+                  appUpperCase 
+                  appInputMask="pan" 
+                  maxlength="10" 
+                  class="form-control" 
+                  placeholder="ABCDE1234F"
+                  (input)="onInputChange($event, 'panNumber')">
+              </div>
+
+              <div class="form-group">
+                <label for="voter">Voter ID (Optional)</label>
+                <input 
+                  id="voter" 
+                  type="text" 
+                  formControlName="voterId" 
+                  appUpperCase 
+                  class="form-control" 
+                  placeholder="e.g. DL/01/045/892019"
+                  (input)="onInputChange($event, 'voterId')">
+              </div>
+
+              <div class="form-group">
+                <div class="label-with-calc">
+                  <label for="aadhaar">Aadhaar Card Number <span class="required">*</span></label>
+                  <span class="live-tag">Live Verhoeff Check</span>
+                </div>
+                <input 
+                  id="aadhaar" 
+                  type="text" 
+                  formControlName="aadhaarNumber" 
+                  appInputMask="aadhaar"
+                  maxlength="14"
+                  class="form-control" 
+                  placeholder="XXXX XXXX XXXX"
+                  (input)="onInputChange($event, 'aadhaarNumber')">
+                
+                <div *ngIf="isInvalid('aadhaarNumber')" class="field-error">
+                  <span *ngIf="form.get('aadhaarNumber')?.errors?.['required']">Aadhaar number is required for Indian nationals.</span>
+                  <span *ngIf="form.get('aadhaarNumber')?.errors?.['invalidAadhaarFormat']">Must be a 12-digit number.</span>
+                  <span *ngIf="form.get('aadhaarNumber')?.errors?.['invalidAadhaarPrefix']">Cannot begin with 0 or 1.</span>
+                  <span *ngIf="form.get('aadhaarNumber')?.errors?.['invalidAadhaarChecksum']">Invalid Aadhaar number (UIDAI Verhoeff Checksum failed).</span>
+                </div>
+
+                <div *ngIf="form.get('aadhaarNumber')?.valid && form.get('aadhaarNumber')?.value" class="field-success">
+                  ✓ Valid 12-digit Aadhaar & Verhoeff checksum verified
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="form-actions">
+      <button type="button" class="btn-prev" (click)="onPrev()">
+        🠐 Back to Step 1
+      </button>
+      <button type="button" class="btn-save-next" (click)="onNext()">
+        Save & Continue to Step 3 ➔
+      </button>
+    </div>
+  </form>
+</div>

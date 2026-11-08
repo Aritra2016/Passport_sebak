@@ -1,0 +1,80 @@
+<div [formGroup]="addressGroup" class="address-grid">
+  <!-- House No & Street -->
+  <div class="form-group col-span-2">
+    <label [for]="prefix + 'house'">
+      House No., Building, Street Name, Locality <span class="req">*</span>
+    </label>
+    <input [id]="prefix + 'house'" type="text" formControlName="houseNoAndStreet" appUpperCase class="form-control"
+      placeholder="e.g. FLAT NO 402, SHIVAM APARTMENTS, MG ROAD" [attr.aria-required]="true"
+      (input)="onInputChange($event, 'houseNoAndStreet')">
+    <div *ngIf="isFieldInvalid('houseNoAndStreet')" class="field-error">
+      House No. and Street address is required.
+    </div>
+  </div>
+
+  <!-- Village / Town / City -->
+  <div class="form-group">
+    <label [for]="prefix + 'city'">
+      Village / Town / City <span class="req">*</span>
+    </label>
+    <input [id]="prefix + 'city'" type="text" formControlName="villageOrCity" appUpperCase class="form-control"
+      placeholder="e.g. NEW DELHI" (input)="onInputChange($event, 'villageOrCity')">
+    <div *ngIf="isFieldInvalid('villageOrCity')" class="field-error">
+      City or Town is required.
+    </div>
+  </div>
+
+  <!-- State -->
+  <div class="form-group">
+    <label [for]="prefix + 'state'">
+      State / Union Territory <span class="req">*</span>
+    </label>
+    <select [id]="prefix + 'state'" formControlName="state" class="form-control"
+      (change)="onStateChange($event); onInputChange($event, 'state')">
+      <option value="">-- Select State / UT --</option>
+      <option *ngFor="let s of stateList" [value]="s">{{ s }}</option>
+    </select>
+    <div *ngIf="isFieldInvalid('state')" class="field-error">
+      Please select your State.
+    </div>
+  </div>
+
+  <!-- District -->
+  <div class="form-group">
+    <label [for]="prefix + 'district'">
+      District <span class="req">*</span>
+    </label>
+    <select [id]="prefix + 'district'" formControlName="district" class="form-control"
+      (change)="onInputChange($event, 'district')">
+      <option value="">-- Select District --</option>
+      <option *ngFor="let d of availableDistricts" [value]="d">{{ d }}</option>
+    </select>
+    <div *ngIf="isFieldInvalid('district')" class="field-error">
+      Please select your District.
+    </div>
+  </div>
+
+  <!-- Police Station -->
+  <div class="form-group">
+    <label [for]="prefix + 'ps'">
+      Police Station <span class="req">*</span>
+    </label>
+    <input [id]="prefix + 'ps'" type="text" formControlName="policeStation" appUpperCase class="form-control"
+      placeholder="e.g. PRASHANT VIHAR POLICE STATION" (input)="onInputChange($event, 'policeStation')">
+    <div *ngIf="isFieldInvalid('policeStation')" class="field-error">
+      Police station is mandatory for verification.
+    </div>
+  </div>
+
+  <!-- PIN Code -->
+  <div class="form-group">
+    <label [for]="prefix + 'pin'">
+      PIN Code (6 Digits) <span class="req">*</span>
+    </label>
+    <input [id]="prefix + 'pin'" type="text" formControlName="pinCode" appInputMask="pincode" maxlength="6"
+      class="form-control" placeholder="e.g. 110085" (input)="onInputChange($event, 'pinCode')">
+    <div *ngIf="isFieldInvalid('pinCode')" class="field-error">
+      Valid 6-digit Indian PIN code required (cannot start with 0).
+    </div>
+  </div>
+</div>

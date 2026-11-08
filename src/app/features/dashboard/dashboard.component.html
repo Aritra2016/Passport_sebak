@@ -1,0 +1,253 @@
+<div class="dashboard-page" id="main-content">
+      <div class="dashboard-container">
+        <!-- Citizen Welcome & Advisory Banner -->
+        <div class="welcome-banner">
+          <div class="welcome-content">
+            <span class="user-greeting">Welcome, {{ authService.currentUser()?.fullName }}</span>
+            <h1 class="welcome-title">Passport Seva Citizen Service Dashboard</h1>
+            <p class="welcome-desc">
+              Manage your passport applications, schedule PSK appointments, pay statutory fees, and track police verification in real-time.
+            </p>
+          </div>
+
+          <div class="quick-apply-cta">
+            <button type="button" class="btn-cta-primary" (click)="startNewApplication('FRESH')">
+              <span class="cta-icon">➕</span>
+              <div>
+                <strong>Apply for Fresh Passport</strong>
+                <small>New booklet issuance</small>
+              </div>
+            </button>
+            <button type="button" class="btn-cta-secondary" (click)="startNewApplication('REISSUE')">
+              <span class="cta-icon">🔄</span>
+              <div>
+                <strong>Apply for Re-issue</strong>
+                <small>Renewal, lost or changes</small>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Latest Advisory Strip -->
+        <div class="advisory-strip" role="alert">
+          <span class="advisory-tag">Latest Advisory:</span>
+          <span class="advisory-text">
+            📢 Now link DigiLocker to auto-verify Aadhaar, Class X Certificate, and Driving License without manual physical photocopies at PSK.
+          </span>
+        </div>
+
+        <!-- Key Metrics Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon bg-blue">📝</div>
+            <div class="metric-data">
+              <span class="metric-count">{{ totalApplicationsCount() }}</span>
+              <span class="metric-label">Total Applications</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon bg-yellow">📅</div>
+            <div class="metric-data">
+              <span class="metric-count">{{ scheduledAppointmentsCount() }}</span>
+              <span class="metric-label">Scheduled PSK Visits</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon bg-purple">👮</div>
+            <div class="metric-data">
+              <span class="metric-count">{{ policeVerificationCount() }}</span>
+              <span class="metric-label">In Police Verification</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon bg-green">✈️</div>
+            <div class="metric-data">
+              <span class="metric-count">{{ dispatchedCount() }}</span>
+              <span class="metric-label">Passports Dispatched</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Role Based View Toggle -->
+        <!-- 1. CITIZEN VIEW: Applications List -->
+        <div *ngIf="authService.currentRole() === 'CITIZEN'" class="content-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-heading">My Submitted & In-Progress Applications</h2>
+              <p class="section-sub">View application statuses, scheduled appointments, and generate official receipts</p>
+            </div>
+            <button type="button" class="btn-new-app" (click)="startNewApplication('FRESH')">
+              + New Application
+            </button>
+          </div>
+
+          <div class="apps-table-card">
+            <table class="gov-table" *ngIf="stateService.applications().length > 0; else noApps">
+              <thead>
+                <tr>
+                  <th>Application Ref No. (ARN)</th>
+                  <th>Applicant Name</th>
+                  <th>Service Details</th>
+                  <th>Submission Date</th>
+                  <th>Current Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let app of stateService.applications()">
+                  <td>
+                    <span class="arn-code">{{ app.arn }}</span>
+                    <span *ngIf="app.serviceType.schemeType === 'TATKAAL'" class="badge-tatkaal">TATKAAL</span>
+                  </td>
+                  <td>
+                    <strong>{{ app.personalDetails.givenName }} {{ app.personalDetails.surname }}</strong>
+                    <div class="sub-row">DOB: {{ app.personalDetails.dateOfBirth }}</div>
+                  </td>
+                  <td>
+                    <span class="service-pill">{{ app.serviceType.applicationType }}</span>
+                    <span class="pages-sub">{{ app.serviceType.bookletSize === '60_PAGES' ? '60 Pages' : '36 Pages' }}</span>
+                  </td>
+                  <td>{{ app.createdAt | date:'mediumDate' }}</td>
+                  <td>
+                    <span 
+                      class="status-pill" 
+                      [ngClass]="(app.status | statusBadge).cssClass">
+                      {{ (app.status | statusBadge).text }}
+                    </span>
+                    <div *ngIf="app.appointment" class="slot-snippet">
+                      📅 {{ app.appointment.appointmentDate }} ({{ app.appointment.appointmentTime }})
+                    </div>
+                  </td>
+                  <td>
+                    <div class="actions-group">
+                      <button 
+                        *ngIf="app.status === 'DRAFT'"
+                        type="button" 
+                        class="btn-action-primary" 
+                        (click)="continueDraft(app)">
+                        Continue Form
+                      </button>
+
+                      <button 
+                        *ngIf="app.status === 'SUBMITTED' && !app.appointment"
+                        type="button" 
+                        class="btn-action-highlight" 
+                        (click)="bookAppointment(app)">
+                        Book Slot
+                      </button>
+
+                      <button 
+                        *ngIf="app.appointment && !app.payment"
+                        type="button" 
+                        class="btn-action-pay" 
+                        (click)="makePayment(app)">
+                        Pay Fee
+                      </button>
+
+                      <button 
+                        *ngIf="app.payment"
+                        type="button" 
+                        class="btn-action-receipt" 
+                        (click)="viewReceipt(app)">
+                        View Receipt
+                      </button>
+
+                      <button 
+                        type="button" 
+                        class="btn-action-track" 
+                        (click)="trackApplication(app.arn)">
+                        Track
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <ng-template #noApps>
+              <div class="empty-state">
+                <span class="empty-icon">📂</span>
+                <h3>No Passport Applications Found</h3>
+                <p>Click "Apply for Fresh Passport" above to start your new Indian Passport application.</p>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
+        <!-- 2. PSK OFFICER VIEW -->
+        <div *ngIf="authService.currentRole() === 'PSK_OFFICER'" class="content-section officer-section">
+          <div class="officer-header">
+            <span class="badge-role">PSK GRANTING OFFICER QUEUE</span>
+            <h2>Passport Seva Kendra Counter Queue (Delhi RPO)</h2>
+            <p>Verify citizen identity, biometric match, and mark appointment attended</p>
+          </div>
+
+          <div class="officer-queue-card">
+            <div *ngFor="let app of stateService.applications()" class="queue-item">
+              <div class="queue-info">
+                <span class="arn-title">{{ app.arn }}</span>
+                <h4>{{ app.personalDetails.givenName }} {{ app.personalDetails.surname }}</h4>
+                <p>Scheme: <strong>{{ app.serviceType.schemeType }}</strong> | PSK: <strong>{{ app.appointment?.pskName || 'PSK Delhi Herald House' }}</strong></p>
+                <div class="badges-row">
+                  <span class="badge-status">{{ app.status }}</span>
+                  <span class="badge-verified" *ngIf="app.documents.length > 0">✓ DigiLocker Verified Docs</span>
+                </div>
+              </div>
+
+              <div class="queue-actions">
+                <button 
+                  type="button" 
+                  class="btn-verify-biometrics"
+                  [disabled]="app.status !== 'APPOINTMENT_SCHEDULED' && app.status !== 'SUBMITTED'"
+                  (click)="markBiometricsAttended(app.arn)">
+                  ✓ Verify Biometrics & Mark Attended
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. POLICE VERIFIER VIEW -->
+        <div *ngIf="authService.currentRole() === 'POLICE_VERIFIER'" class="content-section police-section">
+          <div class="officer-header">
+            <span class="badge-role">POLICE VERIFICATION PORTAL</span>
+            <h2>Special Branch & Local Police Station Verification Queue</h2>
+            <p>Review address residence proofs and criminal record clearance</p>
+          </div>
+
+          <div class="officer-queue-card">
+            <div *ngFor="let app of stateService.applications()" class="queue-item">
+              <div class="queue-info">
+                <span class="arn-title">{{ app.arn }}</span>
+                <h4>{{ app.personalDetails.givenName }} {{ app.personalDetails.surname }}</h4>
+                <p>
+                  Address: {{ app.addressDetails.houseNoAndStreet }}, {{ app.addressDetails.villageOrCity }},
+                  Police Station: <strong>{{ app.addressDetails.policeStation }}</strong>
+                </p>
+                <p>Status: <strong>{{ app.status }}</strong></p>
+              </div>
+
+              <div class="queue-actions">
+                <button 
+                  type="button" 
+                  class="btn-clear-police"
+                  [disabled]="app.status === 'POLICE_VERIFIED' || app.status === 'PASSPORT_PRINTED' || app.status === 'DISPATCHED'"
+                  (click)="clearPoliceVerification(app.arn)">
+                  ✓ Clear Police Verification
+                </button>
+                <button 
+                  type="button" 
+                  class="btn-print-passport"
+                  [disabled]="app.status !== 'POLICE_VERIFIED'"
+                  (click)="printAndDispatch(app.arn)">
+                  🖨️ Print & Dispatch via Speed Post
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

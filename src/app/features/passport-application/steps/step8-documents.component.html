@@ -1,0 +1,94 @@
+<div class="step-card">
+      <div class="step-header">
+        <div class="header-left">
+          <span class="step-badge">Step 8 of 9</span>
+          <h3>Document Upload & DigiLocker e-KYC</h3>
+          <p class="step-subtitle">Upload required proof documents or fetch instantly from DigiLocker repository.</p>
+        </div>
+
+        <!-- DigiLocker OAuth Action Banner -->
+        <div class="digilocker-cta-box">
+          <div class="digi-badge-icon">DL</div>
+          <div class="digi-text">
+            <strong>Fast-Track with DigiLocker:</strong>
+            <p>Fetch verified Aadhaar XML, 10th Certificate & Driving License in seconds.</p>
+          </div>
+          <button type="button" class="btn-digilocker-trigger" (click)="openDigilocker()">
+            ⚡ Fetch via DigiLocker
+          </button>
+        </div>
+      </div>
+
+      <div class="documents-grid">
+        <!-- 1. Photo / Signature -->
+        <app-file-uploader
+          title="Recent Passport Size Photograph & Signature"
+          description="White background, 3.5cm x 4.5cm, face covering 70-80% of photo. JPEG/PNG up to 2MB."
+          category="PHOTO"
+          [required]="true"
+          [document]="getDocByCategory('PHOTO')"
+          (fileUploaded)="onDocUploaded($event)"
+          (fileRemoved)="onDocRemoved($event)">
+        </app-file-uploader>
+
+        <!-- 2. Identity Proof -->
+        <app-file-uploader
+          title="Proof of Identity (Aadhaar / Voter ID / PAN)"
+          description="Clear scanned copy of your photo identity card or UIDAI e-KYC paperless XML."
+          category="IDENTITY_PROOF"
+          [required]="true"
+          [document]="getDocByCategory('IDENTITY_PROOF')"
+          (fileUploaded)="onDocUploaded($event)"
+          (fileRemoved)="onDocRemoved($event)">
+        </app-file-uploader>
+
+        <!-- 3. Address Proof -->
+        <app-file-uploader
+          title="Proof of Present Residential Address"
+          description="Aadhaar Card, Water/Electricity Bill, Rent Agreement, or Driving License."
+          category="ADDRESS_PROOF"
+          [required]="true"
+          [document]="getDocByCategory('ADDRESS_PROOF')"
+          (fileUploaded)="onDocUploaded($event)"
+          (fileRemoved)="onDocRemoved($event)">
+        </app-file-uploader>
+
+        <!-- 4. DOB Proof -->
+        <app-file-uploader
+          title="Proof of Date of Birth"
+          description="Birth Certificate issued by Registrar / Municipal Authority or Class X Matriculation Certificate."
+          category="DOB_PROOF"
+          [required]="true"
+          [document]="getDocByCategory('DOB_PROOF')"
+          (fileUploaded)="onDocUploaded($event)"
+          (fileRemoved)="onDocRemoved($event)">
+        </app-file-uploader>
+      </div>
+
+      <!-- Upload Summary Status Alert -->
+      <div class="upload-summary-bar" [class.complete]="isAllMandatoryUploaded()">
+        <span>
+          {{ uploadedDocs.length }} of 4 Document Categories Attached
+        </span>
+        <span *ngIf="isAllMandatoryUploaded()" class="badge-ready">
+          ✓ All mandatory documents attached & ready for review
+        </span>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="form-actions">
+        <button type="button" class="btn-prev" (click)="onPrev()">
+          🠐 Back to Step 7
+        </button>
+        <button type="button" class="btn-save-next" (click)="onNext()">
+          Save & Proceed to Final Review ➔
+        </button>
+      </div>
+
+      <!-- DigiLocker Interactive Modal -->
+      <app-digilocker-modal
+        [isOpen]="isDigilockerOpen"
+        (close)="isDigilockerOpen = false"
+        (documentsImported)="onDigilockerImport($event)">
+      </app-digilocker-modal>
+    </div>

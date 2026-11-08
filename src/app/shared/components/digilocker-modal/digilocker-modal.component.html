@@ -1,0 +1,113 @@
+<div *ngIf="isOpen" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="digilocker-title">
+      <div class="modal-card">
+        <!-- Official DigiLocker Header -->
+        <div class="modal-header">
+          <div class="digi-brand">
+            <div class="digi-logo-badge">DL</div>
+            <div>
+              <h2 id="digilocker-title" class="digi-heading">DigiLocker Integration</h2>
+              <span class="digi-sub">Government of India Document Repository</span>
+            </div>
+          </div>
+          <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close modal">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Step 1: Authentication -->
+          <div *ngIf="authStage === 'LOGIN'">
+            <div class="auth-box">
+              <label class="auth-label">Aadhaar Number / Registered Mobile</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="identifier" 
+                placeholder="XXXX XXXX XXXX or 10-digit mobile"
+                maxlength="14">
+
+              <label class="auth-label mt-3">6-Digit DigiLocker Security PIN</label>
+              <input 
+                type="password" 
+                class="form-control pin-input" 
+                [(ngModel)]="securityPin" 
+                placeholder="● ● ● ● ● ●"
+                maxlength="6">
+
+              <div class="quick-demo-tip">
+                💡 <em>Demo Auto-fill:</em> Click 
+                <button type="button" class="btn-demo-link" (click)="autoFillDemo()">Use Demo Citizen Credentials</button>
+              </div>
+
+              <button 
+                type="button" 
+                class="btn-digi-primary mt-4" 
+                [disabled]="!identifier || securityPin.length < 6"
+                (click)="proceedToConsent()">
+                Sign In to DigiLocker
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Consent & Document Selection -->
+          <div *ngIf="authStage === 'CONSENT'">
+            <div class="consent-alert">
+              <strong>Passport Seva Project (MEA)</strong> requests permission to fetch your verified electronic documents for instant e-KYC.
+            </div>
+
+            <h4 class="section-title">Available Issued Documents:</h4>
+            <div class="doc-checklist">
+              <label class="doc-check-item">
+                <input type="checkbox" [(ngModel)]="selectAadhaar" checked>
+                <div class="doc-meta-item">
+                  <span class="doc-icon">🆔</span>
+                  <div>
+                    <strong>Aadhaar Card (UIDAI e-KYC)</strong>
+                    <p>Verified Identity & Address Proof (XML format)</p>
+                  </div>
+                </div>
+              </label>
+
+              <label class="doc-check-item">
+                <input type="checkbox" [(ngModel)]="selectClassX" checked>
+                <div class="doc-meta-item">
+                  <span class="doc-icon">📜</span>
+                  <div>
+                    <strong>Class X Matriculation Certificate (CBSE)</strong>
+                    <p>Verified Date of Birth & Non-ECR Proof</p>
+                  </div>
+                </div>
+              </label>
+
+              <label class="doc-check-item">
+                <input type="checkbox" [(ngModel)]="selectDl" checked>
+                <div class="doc-meta-item">
+                  <span class="doc-icon">🚗</span>
+                  <div>
+                    <strong>Driving License (MoRTH)</strong>
+                    <p>Verified Photo Identity & Signature</p>
+                  </div>
+                </div>
+              </label>
+            </div>
+
+            <button 
+              type="button" 
+              class="btn-digi-success mt-4" 
+              [disabled]="isFetching"
+              (click)="fetchDocuments()">
+              <span *ngIf="!isFetching">Grant Consent & Fetch {{ getSelectedCount() }} Documents</span>
+              <span *ngIf="isFetching">Verifying & Downloading from DigiLocker...</span>
+            </button>
+          </div>
+
+          <!-- Step 3: Success -->
+          <div *ngIf="authStage === 'SUCCESS'" class="success-box">
+            <div class="success-icon">✓</div>
+            <h3>Documents Successfully Retrieved!</h3>
+            <p>Your documents have been verified via UIDAI & CBSE DigiLocker gateways and attached to your application.</p>
+            <button type="button" class="btn-digi-primary" (click)="finalizeImport()">
+              Done & Return to Application
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>

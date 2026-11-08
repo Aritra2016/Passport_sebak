@@ -1,0 +1,12 @@
+.code-container {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: #ffffff;
+      padding: 6px;
+      border-radius: 6px;
+    }
+
+    .barcode-svg, .qr-svg {
+      display: block;
+    }

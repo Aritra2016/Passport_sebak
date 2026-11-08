@@ -1,0 +1,32 @@
+<div class="stepper-wrapper" role="navigation" aria-label="Passport Application Steps">
+      <div class="stepper-progress-track">
+        <div 
+          class="stepper-progress-bar" 
+          [style.width.%]="((activeStep - 1) / (steps.length - 1)) * 100">
+        </div>
+      </div>
+
+      <div class="stepper-items">
+        <button 
+          *ngFor="let item of steps"
+          type="button"
+          class="step-item"
+          [class.active]="item.step === activeStep"
+          [class.completed]="item.step < activeStep"
+          [class.disabled]="item.step > maxReachedStep"
+          [attr.aria-current]="item.step === activeStep ? 'step' : null"
+          [disabled]="item.step > maxReachedStep"
+          (click)="onStepClick(item.step)">
+          
+          <div class="step-circle">
+            <span *ngIf="item.step < activeStep" class="check-icon">✓</span>
+            <span *ngIf="item.step >= activeStep">{{ item.step }}</span>
+          </div>
+
+          <div class="step-text">
+            <span class="step-num-text">Step {{ item.step }}</span>
+            <span class="step-label-text">{{ item.label }}</span>
+          </div>
+        </button>
+      </div>
+    </div>

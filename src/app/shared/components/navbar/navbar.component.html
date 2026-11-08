@@ -1,0 +1,146 @@
+<header class="portal-header" role="banner">
+      <!-- Top Accessibility & Citizen Convenience Bar -->
+      <div class="top-gov-bar">
+        <div class="gov-bar-container">
+          <div class="gov-branding">
+            <span class="flag-emblem">🇮🇳</span>
+            <span>भारत सरकार | Government of India</span>
+            <span class="bar-separator">|</span>
+            <span>विदेश मंत्रालय | Ministry of External Affairs</span>
+            <span *ngIf="env.banner.show" class="env-banner-badge" [style.background]="env.banner.bgColor" [style.color]="env.banner.textColor">
+              {{ env.banner.label }}
+            </span>
+          </div>
+
+          <div class="gov-tools" role="region" aria-label="Accessibility and Portal Controls">
+            <!-- Screen reader link -->
+            <a href="#main-content" class="skip-link">Skip to main content</a>
+
+            <!-- Font Resizer -->
+            <div class="tool-group font-resizer" aria-label="Text size controls">
+              <button type="button" (click)="setFontSize('small')" title="Decrease text size" aria-label="Decrease text size">A-</button>
+              <button type="button" (click)="setFontSize('normal')" title="Normal text size" aria-label="Normal text size">A</button>
+              <button type="button" (click)="setFontSize('large')" title="Increase text size" aria-label="Increase text size">A+</button>
+            </div>
+
+            <!-- High Contrast Toggle -->
+            <button 
+              type="button" 
+              class="contrast-toggle-btn" 
+              (click)="toggleHighContrast()"
+              title="Toggle High Contrast Mode"
+              aria-label="Toggle High Contrast Mode">
+              <span class="contrast-icon">◐</span>
+              <span>{{ isHighContrast ? 'Standard View' : 'High Contrast' }}</span>
+            </button>
+
+            <!-- Language indicator -->
+            <span class="lang-pill" title="English Portal View">English / हिन्दी</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tricolor Accent Ribbon -->
+      <div class="tricolor-strip" aria-hidden="true">
+        <div class="tri-saffron"></div>
+        <div class="tri-white"></div>
+        <div class="tri-green"></div>
+      </div>
+
+      <!-- Main Portal Navigation Header -->
+      <div class="main-nav-container">
+        <div class="brand-section">
+          <!-- Ashoka Emblem SVG -->
+          <div class="ashoka-emblem" aria-hidden="true">
+            <svg width="42" height="48" viewBox="0 0 100 115" fill="currentColor">
+              <path d="M50 0 C40 10 30 15 20 25 C15 35 15 50 20 65 C25 80 40 95 50 115 C60 95 75 80 80 65 C85 50 85 35 80 25 C70 15 60 10 50 0 Z" fill="#1a365d" opacity="0.15"/>
+              <circle cx="50" cy="55" r="28" fill="none" stroke="#1a365d" stroke-width="4"/>
+              <circle cx="50" cy="55" r="5" fill="#1a365d"/>
+              <path d="M50 27 L50 83 M22 55 L78 55 M30 35 L70 75 M30 75 L70 35" stroke="#1a365d" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <div class="brand-text">
+            <div class="portal-title">
+              <span class="title-primary">Passport Seva</span>
+              <span class="title-hindi">पासपोर्ट सेवा</span>
+              <span *ngIf="env.banner.show" class="env-mini-pill" [style.background]="env.banner.bgColor" [style.color]="env.banner.textColor">
+                {{ env.envName.toUpperCase() }}
+              </span>
+            </div>
+            <div class="portal-sub">PSP Division, Ministry of External Affairs, Government of India</div>
+          </div>
+        </div>
+
+        <!-- Role Quick Switcher & User Profile Menu -->
+        <div class="nav-actions">
+          <!-- Role Switcher Dropdown (for testing and role demonstration) -->
+          <div class="role-switcher-badge">
+            <label for="role-select" class="role-label">Active Role:</label>
+            <select 
+              id="role-select"
+              class="role-select" 
+              [value]="authService.currentRole()" 
+              (change)="onRoleChange($event)">
+              <option value="CITIZEN">👤 Citizen / Applicant</option>
+              <option value="PSK_OFFICER">🏢 PSK Officer</option>
+              <option value="POLICE_VERIFIER">👮 Police Verifier</option>
+            </select>
+          </div>
+
+          <!-- Active Slot Countdown Badge (if slot is held) -->
+          <div *ngIf="stateService.isSlotHeld()" class="slot-timer-badge">
+            <span class="slot-timer-icon">⏱</span>
+            <span>Slot Held: {{ stateService.formattedSlotTimer() }}</span>
+          </div>
+
+          <!-- User Menu -->
+          <div class="user-menu" *ngIf="authService.currentUser() as user">
+            <div class="user-info">
+              <span class="user-name">{{ user.fullName }}</span>
+              <span class="user-role-tag">{{ authService.formatRole(user.role) }}</span>
+            </div>
+            <button type="button" class="btn-logout" (click)="authService.logout()" title="Log out securely">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Primary Navigation Links Bar -->
+      <nav class="nav-links-bar" role="navigation" aria-label="Main Navigation">
+        <div class="nav-links-container">
+          <ul class="nav-list">
+            <li>
+              <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a routerLink="/passport-application" routerLinkActive="active">
+                Apply for Passport
+              </a>
+            </li>
+            <li>
+              <a routerLink="/appointment" routerLinkActive="active">
+                Schedule Appointment
+              </a>
+            </li>
+            <li>
+              <a routerLink="/payment" routerLinkActive="active">
+                Fee & E-Payment
+              </a>
+            </li>
+            <li>
+              <a routerLink="/tracking" routerLinkActive="active">
+                Track Application Status
+              </a>
+            </li>
+          </ul>
+
+          <div class="session-indicator" title="Session activity countdown">
+            Session: {{ sessionCountdown() }}
+          </div>
+        </div>
+      </nav>
+    </header>

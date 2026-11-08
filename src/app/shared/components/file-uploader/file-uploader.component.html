@@ -1,0 +1,68 @@
+<div class="uploader-container">
+      <div class="uploader-header">
+        <label class="doc-title">{{ title }}</label>
+        <span *ngIf="required" class="badge-required">Mandatory</span>
+      </div>
+      <p class="doc-desc">{{ description }}</p>
+
+      <!-- If file is already uploaded / selected -->
+      <div *ngIf="document" class="uploaded-card">
+        <div class="uploaded-info">
+          <div class="doc-icon-box">
+            <span *ngIf="document.fileName.endsWith('.pdf')">📄</span>
+            <span *ngIf="!document.fileName.endsWith('.pdf')">🖼️</span>
+          </div>
+          <div class="doc-details">
+            <span class="doc-name">{{ document.fileName }}</span>
+            <span class="doc-meta">{{ document.fileSize }} • {{ document.uploadDate }}</span>
+            <span *ngIf="document.verifiedByDigiLocker" class="digilocker-badge">
+              ✓ DigiLocker Verified
+            </span>
+          </div>
+        </div>
+
+        <button 
+          type="button" 
+          class="btn-remove-doc" 
+          (click)="removeFile()"
+          aria-label="Remove uploaded file">
+          ✕ Remove
+        </button>
+      </div>
+
+      <!-- If no file is uploaded yet -->
+      <div 
+        *ngIf="!document"
+        class="drop-zone"
+        [class.dragging]="isDragging"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+        (click)="fileInput.click()">
+
+        <input 
+          #fileInput 
+          type="file" 
+          [accept]="accept" 
+          style="display: none" 
+          (change)="onFileSelected($event)">
+
+        <div class="drop-content">
+          <div class="cloud-icon">☁️</div>
+          <div class="drop-text">
+            <strong>Click to upload</strong> or drag and drop file here
+          </div>
+          <div class="drop-hint">
+            Accepted: PDF, JPG, PNG (Max 2MB per MEA guidelines)
+          </div>
+        </div>
+
+        <div *ngIf="isUploading" class="upload-progress-bar">
+          <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-text">
+        ⚠ {{ errorMessage }}
+      </div>
+    </div>

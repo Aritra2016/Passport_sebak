@@ -1,0 +1,164 @@
+<div class="receipt-page">
+      <!-- Non-Print Toolbar -->
+      <div class="no-print-toolbar">
+        <div class="toolbar-container">
+          <div class="toolbar-left">
+            <button type="button" class="btn-back" (click)="goBack()">🠐 Dashboard</button>
+            <span class="toolbar-title">Official Passport Seva Appointment Receipt</span>
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="btn-print" (click)="printReceipt()">
+              🖨️ Print Receipt (Ctrl+P)
+            </button>
+            <button type="button" class="btn-track" (click)="trackStatus()">
+              📍 Track Application
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Printable Official Receipt Card (A4 format) -->
+      <div class="receipt-paper" id="printable-area" *ngIf="application; else notFound">
+        <!-- Official Government Header -->
+        <div class="receipt-header">
+          <div class="emblem-col">
+            <div class="ashoka-symbol">🇮🇳</div>
+          </div>
+          <div class="title-col">
+            <h2>GOVERNMENT OF INDIA</h2>
+            <h3>MINISTRY OF EXTERNAL AFFAIRS</h3>
+            <p>CPV DIVISION • PASSPORT SEVA PROJECT</p>
+            <div class="doc-badge">PASSPORT APPLICATION APPOINTMENT RECEIPT</div>
+          </div>
+          <div class="qr-col">
+            <app-barcode-qr type="qrcode" [value]="application.arn" [qrSize]="90"></app-barcode-qr>
+          </div>
+        </div>
+
+        <!-- Barcode Strip -->
+        <div class="barcode-banner">
+          <app-barcode-qr type="barcode" [value]="application.arn" [width]="320" [height]="60"></app-barcode-qr>
+        </div>
+
+        <!-- Appointment Scheduling Card -->
+        <div class="receipt-section appointment-box">
+          <div class="section-title">APPOINTMENT SCHEDULE DETAILS</div>
+          <table class="receipt-table">
+            <tbody>
+              <tr>
+                <td class="lbl" style="width: 25%">Application Ref No. (ARN):</td>
+                <td class="val highlight font-mono" style="width: 25%"><strong>{{ application.arn }}</strong></td>
+                <td class="lbl" style="width: 25%">Appointment Date:</td>
+                <td class="val highlight" style="width: 25%"><strong>{{ application.appointment?.appointmentDate || '15 Nov 2026' }}</strong></td>
+              </tr>
+              <tr>
+                <td class="lbl">Reporting Time:</td>
+                <td class="val text-red"><strong>{{ application.appointment?.appointmentTime || '10:00 AM' }} (Batch A04)</strong></td>
+                <td class="lbl">Scheme / Booklet:</td>
+                <td class="val">{{ application.serviceType.schemeType }} / {{ application.serviceType.bookletSize === '60_PAGES' ? '60 Pages' : '36 Pages' }}</td>
+              </tr>
+              <tr>
+                <td class="lbl">Passport Seva Kendra (PSK):</td>
+                <td class="val" colspan="3">
+                  <strong>{{ application.appointment?.pskName || 'PSK Herald House, ITO, New Delhi' }}</strong><br>
+                  <small>{{ application.appointment?.pskAddress || 'Herald House, 5-A, Bahadur Shah Zafar Marg, ITO, New Delhi 110002' }}</small>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Applicant Personal Information -->
+        <div class="receipt-section">
+          <div class="section-title">APPLICANT DEMOGRAPHIC PARTICULARS</div>
+          <table class="receipt-table">
+            <tbody>
+              <tr>
+                <td class="lbl" style="width: 25%">Full Legal Name:</td>
+                <td class="val" style="width: 25%"><strong>{{ application.personalDetails.givenName }} {{ application.personalDetails.surname }}</strong></td>
+                <td class="lbl" style="width: 25%">Date of Birth:</td>
+                <td class="val" style="width: 25%">{{ application.personalDetails.dateOfBirth }}</td>
+              </tr>
+              <tr>
+                <td class="lbl">Gender / Marital Status:</td>
+                <td class="val">{{ application.personalDetails.gender }} / {{ application.personalDetails.maritalStatus }}</td>
+                <td class="lbl">Place of Birth:</td>
+                <td class="val">{{ application.personalDetails.birthPlace }}, {{ application.personalDetails.birthState }}</td>
+              </tr>
+              <tr>
+                <td class="lbl">Father's Name:</td>
+                <td class="val">{{ application.familyDetails.fatherGivenName }} {{ application.familyDetails.fatherSurname }}</td>
+                <td class="lbl">Mother's Name:</td>
+                <td class="val">{{ application.familyDetails.motherGivenName }} {{ application.familyDetails.motherSurname }}</td>
+              </tr>
+              <tr>
+                <td class="lbl">Residential Address:</td>
+                <td class="val" colspan="3">
+                  {{ application.addressDetails.houseNoAndStreet }}, {{ application.addressDetails.villageOrCity }},
+                  {{ application.addressDetails.district }}, {{ application.addressDetails.state }} - {{ application.addressDetails.pinCode }}
+                </td>
+              </tr>
+              <tr>
+                <td class="lbl">Police Station:</td>
+                <td class="val"><strong>{{ application.addressDetails.policeStation }}</strong></td>
+                <td class="lbl">Aadhaar (Last 4 Digits):</td>
+                <td class="val font-mono">{{ application.personalDetails.aadhaarNumber | maskText:0:4 }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Payment Details Summary -->
+        <div class="receipt-section">
+          <div class="section-title">PAYMENT TRANSACTION SUMMARY</div>
+          <table class="receipt-table">
+            <tbody>
+              <tr>
+                <td class="lbl" style="width: 25%">Total Amount Paid:</td>
+                <td class="val highlight" style="width: 25%"><strong>₹ {{ application.payment?.totalFee || 1550 }}</strong></td>
+                <td class="lbl" style="width: 25%">Payment Status:</td>
+                <td class="val text-green" style="width: 25%"><strong>SUCCESS</strong></td>
+              </tr>
+              <tr>
+                <td class="lbl">Transaction Ref ID:</td>
+                <td class="val font-mono">{{ application.payment?.transactionId || 'SBIePay9948210482' }}</td>
+                <td class="lbl">Payment Gateway & Mode:</td>
+                <td class="val">{{ application.payment?.paymentMethod || 'SBI_EPAY' }} ({{ application.payment?.paymentMode || 'UPI' }})</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mandatory Instructions for Applicant -->
+        <div class="instructions-box">
+          <div class="inst-title">IMPORTANT INSTRUCTIONS FOR APPLICANT AT PSK:</div>
+          <ol class="inst-list">
+            <li><strong>Reporting Time:</strong> Please report at the PSK 15 minutes before the scheduled batch time. Entry will not be permitted if you are late.</li>
+            <li><strong>Mandatory Documents:</strong> Bring all original documents (Aadhaar Card, Proof of DOB, Address Proof, Educational Certificates) along with one self-attested photocopy set.</li>
+            <li><strong>DigiLocker Applicants:</strong> If documents were fetched via DigiLocker, physical photocopies are waived; however, original Aadhaar card must still be carried for biometric matching.</li>
+            <li><strong>Photographs:</strong> For adults, fresh digital photographs and biometrics will be captured at Counter A of the PSK. Photographs for children under 4 years should be brought by parents.</li>
+            <li><strong>Electronic Devices:</strong> Weapons, laptops, cameras, and hazardous materials are strictly prohibited inside the PSK premises.</li>
+          </ol>
+        </div>
+
+        <!-- Official Sign-off & Watermark -->
+        <div class="receipt-footer">
+          <div class="footer-sign">
+            <span>Generated via PSP Citizen Portal 2.0</span>
+            <span>Date of Generation: {{ currentDate }}</span>
+          </div>
+          <div class="footer-sign text-right">
+            <span>Passport Seva System Administrator</span>
+            <span>Ministry of External Affairs, New Delhi</span>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #notFound>
+        <div class="not-found-card">
+          <h3>Application Not Found</h3>
+          <p>Please select an application from your dashboard to view its receipt.</p>
+          <button type="button" class="btn-back" (click)="goBack()">Return to Dashboard</button>
+        </div>
+      </ng-template>
+    </div>

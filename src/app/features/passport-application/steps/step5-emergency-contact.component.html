@@ -1,0 +1,201 @@
+<div class="step-card">
+  <div class="step-header">
+    <span class="step-badge">Step 5 of 9</span>
+    <h3>Emergency Contact Details</h3>
+    <p class="step-subtitle">Specify contact details of a close relative or guardian in India in case of emergency (Primary and dynamic Alternate contacts).</p>
+  </div>
+
+  <form [formGroup]="form" class="step-form">
+
+    <!-- Accordion Section 1: Primary Emergency Contact -->
+    <div class="accordion lines">
+      <ul>
+        <li>
+          <div role="button" class="title" tabindex="0" (click)="toggleSection('primary')">
+            <span>#1 Primary Emergency Contact Particulars</span>
+            <span class="icon" [ngClass]="{'expanded': primaryOpen}">&#9660;</span>
+          </div>
+          <div class="content" *ngIf="primaryOpen">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cName">Name of Emergency Contact Person <span class="required">*</span></label>
+                <input 
+                  id="cName" 
+                  type="text" 
+                  formControlName="contactName" 
+                  appUpperCase 
+                  class="form-control" 
+                  placeholder="e.g. RAMESH CHANDER SHARMA"
+                  (input)="onInputChange($event, 'contactName')">
+                <div *ngIf="isInvalid('contactName')" class="field-error">Contact name is mandatory.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="rel">Relationship with Applicant <span class="required">*</span></label>
+                <select id="rel" formControlName="relationship" class="form-control" (change)="onInputChange($event, 'relationship')">
+                  <option value="FATHER">Father</option>
+                  <option value="MOTHER">Mother</option>
+                  <option value="SPOUSE">Spouse</option>
+                  <option value="BROTHER">Brother</option>
+                  <option value="SISTER">Sister</option>
+                  <option value="SON">Son</option>
+                  <option value="DAUGHTER">Daughter</option>
+                  <option value="LEGAL_GUARDIAN">Legal Guardian</option>
+                  <option value="FRIEND">Friend / Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cAddress">Full Residential Address <span class="required">*</span></label>
+              <textarea 
+                id="cAddress" 
+                formControlName="address" 
+                appUpperCase 
+                rows="2" 
+                class="form-control" 
+                placeholder="House No., Street, City, State, PIN Code"
+                (input)="onInputChange($event, 'address')"></textarea>
+              <div *ngIf="isInvalid('address')" class="field-error">Address of emergency contact is mandatory.</div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cMobile">Mobile Number (10 Digits) <span class="required">*</span></label>
+                <input 
+                  id="cMobile" 
+                  type="tel" 
+                  formControlName="mobileNumber" 
+                  appInputMask="pincode" 
+                  maxlength="10" 
+                  class="form-control" 
+                  placeholder="e.g. 9810012345"
+                  (input)="onInputChange($event, 'mobileNumber')">
+                <div *ngIf="isInvalid('mobileNumber')" class="field-error">Valid 10-digit mobile number required.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="cEmail">Email ID (Optional)</label>
+                <input 
+                  id="cEmail" 
+                  type="email" 
+                  formControlName="email" 
+                  class="form-control" 
+                  placeholder="contact@example.com"
+                  (input)="onInputChange($event, 'email')">
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Accordion Section 2: Alternate Contacts (FormArray Table) -->
+    <div class="accordion lines">
+      <ul>
+        <li>
+          <div role="button" class="title" tabindex="0" (click)="toggleSection('alternate')">
+            <span>#2 Alternate Emergency Contacts (FormArray)</span>
+            <span class="icon" [ngClass]="{'expanded': alternateOpen}">&#9660;</span>
+          </div>
+          <div class="content" *ngIf="alternateOpen">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <span style="font-weight: 600; font-size: 13.5px; color: #475569;">Secondary or Workplace Contacts:</span>
+              <button type="button" class="btn-add-item" (click)="addAlternateContact()">+ Add Alternate Contact</button>
+            </div>
+
+            <!-- Empty state fallback matching reference na-row -->
+            <div class="row no-data-message" *ngIf="alternateContactsArray.length === 0">
+              <div class="column md-6 filled">
+                <p class="na-row">No alternate contacts configured. Click '+ Add Alternate Contact' above to append records to this FormArray.</p>
+              </div>
+            </div>
+
+            <!-- Enterprise Data Table (Matching ip-related-table in EDE reference) -->
+            <div *ngIf="alternateContactsArray.length > 0" class="mt-2">
+              <table class="ip-related-table">
+                <thead>
+                  <tr class="sub-header-design">
+                    <th class="column md-3 filled" style="width: 70px;">Record #</th>
+                    <th class="column md-3 filled">
+                      <label class="label-record-vlan">
+                        Contact Person Name&nbsp;<span class="required">*</span>
+                        <i class="icon icon-info" tabindex="0">
+                          <div class="tooltip1">Full legal name of secondary contact</div>
+                        </i>
+                      </label>
+                    </th>
+                    <th class="column md-3 filled" style="width: 140px;">
+                      <label class="label-record-vlan">Relationship&nbsp;<span class="required">*</span></label>
+                    </th>
+                    <th class="column md-3 filled" style="width: 140px;">Mobile Number&nbsp;<span class="required">*</span></th>
+                    <th class="column md-3 filled">Address&nbsp;<span class="required">*</span></th>
+                    <th class="column md-3 filled" style="width: 90px; text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="alternateContacts">
+                  <tr *ngFor="let altGroup of alternateContactsArray.controls; let idx = index" [formGroupName]="idx">
+                    <td style="font-weight: 700; color: #64748b; text-align: center;">#{{ idx + 1 }}</td>
+                    <td>
+                      <input 
+                        type="text" 
+                        formControlName="contactName" 
+                        appUpperCase 
+                        class="form-control" 
+                        placeholder="Contact name"
+                        (input)="onInputChange($event, 'altContact[' + idx + '].contactName')">
+                    </td>
+                    <td>
+                      <select formControlName="relationship" class="form-control" (change)="onInputChange($event, 'altContact[' + idx + '].relationship')">
+                        <option value="FATHER">Father</option>
+                        <option value="MOTHER">Mother</option>
+                        <option value="SPOUSE">Spouse</option>
+                        <option value="BROTHER">Brother</option>
+                        <option value="SISTER">Sister</option>
+                        <option value="LEGAL_GUARDIAN">Guardian</option>
+                        <option value="FRIEND">Friend</option>
+                        <option value="WORKPLACE">Workplace</option>
+                      </select>
+                    </td>
+                    <td>
+                      <input 
+                        type="tel" 
+                        formControlName="mobileNumber" 
+                        appInputMask="pincode" 
+                        maxlength="10" 
+                        class="form-control" 
+                        placeholder="Mobile"
+                        (input)="onInputChange($event, 'altContact[' + idx + '].mobileNumber')">
+                    </td>
+                    <td>
+                      <input 
+                        type="text" 
+                        formControlName="address" 
+                        appUpperCase 
+                        class="form-control" 
+                        placeholder="Address"
+                        (input)="onInputChange($event, 'altContact[' + idx + '].address')">
+                    </td>
+                    <td style="text-align: center;">
+                      <button type="button" class="btn-remove-item" (click)="removeAlternateContact(idx)" title="Remove Contact">✕ Remove</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="form-actions">
+      <button type="button" class="btn-prev" (click)="onPrev()">
+        🠐 Back to Step 4
+      </button>
+      <button type="button" class="btn-save-next" (click)="onNext()">
+        Save & Continue to Step 6 ➔
+      </button>
+    </div>
+  </form>
+</div>

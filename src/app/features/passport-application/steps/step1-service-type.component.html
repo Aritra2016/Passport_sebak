@@ -1,0 +1,116 @@
+<div class="step-card">
+  <div class="step-header">
+    <span class="step-badge">Step 1 of 9</span>
+    <h3>Service Type Selection</h3>
+    <p class="step-subtitle">Specify whether this is a fresh passport issuance or re-issue of an existing booklet.</p>
+  </div>
+
+  <form [formGroup]="form" class="step-form">
+    <!-- Application Type -->
+    <div class="section-group">
+      <label class="section-title">Applying For <span class="req">*</span></label>
+      <div class="radio-card-grid">
+        <label class="radio-card" [class.selected]="form.get('applicationType')?.value === 'FRESH'">
+          <input type="radio" value="FRESH" formControlName="applicationType"
+            (change)="onInputChange($event, 'applicationType')">
+          <div class="card-text">
+            <strong class="title">Fresh Passport</strong>
+            <span class="desc">Applying for the very first time, or if never held an Indian passport before.</span>
+          </div>
+        </label>
+
+        <label class="radio-card" [class.selected]="form.get('applicationType')?.value === 'REISSUE'">
+          <input type="radio" value="REISSUE" formControlName="applicationType"
+            (change)="onInputChange($event, 'applicationType')">
+          <div class="card-text">
+            <strong class="title">Re-issue of Passport</strong>
+            <span class="desc">For renewal due to expiry, exhaustion of pages, damage, loss, or change in
+              particulars.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Reissue Reason (Conditional) -->
+    <div class="section-group" *ngIf="form.get('applicationType')?.value === 'REISSUE'">
+      <label class="section-title" for="reissueReason">Reason for Re-issue <span class="req">*</span></label>
+        <select id="reissueReason" formControlName="reissueReason" class="form-control"
+          (change)="onInputChange($event, 'reissueReason')">
+          <option value="">-- Select Re-issue Reason --</option>
+          <option value="Validity Expired within 3 years">Validity Expired within 3 years</option>
+          <option value="Validity Expired more than 3 years ago">Validity Expired more than 3 years ago</option>
+          <option value="Exhaustion of Pages">Exhaustion of Pages</option>
+          <option value="Lost Passport">Lost Passport</option>
+          <option value="Damaged Passport">Damaged Passport</option>
+          <option value="Change in Personal Particulars">Change in Personal Particulars (Name, Address, Spouse, etc.)
+          </option>
+        </select>
+        <div *ngIf="isInvalid('reissueReason')" class="field-error">Please select reason for re-issue.</div>
+    </div>
+
+    <!-- Scheme Type -->
+    <div class="section-group">
+      <label class="section-title">Type of Application / Scheme <span class="req">*</span></label>
+      <div class="radio-card-grid">
+        <label class="radio-card" [class.selected]="form.get('schemeType')?.value === 'NORMAL'">
+          <input type="radio" value="NORMAL" formControlName="schemeType">
+          <div class="card-text">
+            <div class="title-row">
+              <strong class="title">Normal Scheme</strong>
+              <span class="fee-tag">Base Fee: ₹1,500</span>
+            </div>
+            <span class="desc">Standard processing time (approx. 7–14 working days after police verification).</span>
+          </div>
+        </label>
+
+        <label class="radio-card" [class.selected]="form.get('schemeType')?.value === 'TATKAAL'">
+          <input type="radio" value="TATKAAL" formControlName="schemeType">
+          <div class="card-text">
+            <div class="title-row">
+              <strong class="title">Tatkaal Scheme</strong>
+              <span class="fee-tag-tatkaal">Fee: ₹3,500 (₹2,000 extra)</span>
+            </div>
+            <span class="desc">Expedited fast-track processing (dispatch within 1–3 working days). Annexure requirement
+              applies.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Booklet Size -->
+    <div class="section-group">
+      <label class="section-title">Type of Passport Booklet <span class="req">*</span></label>
+      <div class="radio-card-grid">
+        <label class="radio-card" [class.selected]="form.get('bookletSize')?.value === '36_PAGES'">
+          <input type="radio" value="36_PAGES" formControlName="bookletSize">
+          <div class="card-text">
+            <div class="title-row">
+              <strong class="title">36 Pages (Standard)</strong>
+              <span class="badge-rec">Recommended</span>
+            </div>
+            <span class="desc">Ideal for normal leisure and business travel. Valid for 10 years for adults.</span>
+          </div>
+        </label>
+
+        <label class="radio-card" [class.selected]="form.get('bookletSize')?.value === '60_PAGES'">
+          <input type="radio" value="60_PAGES" formControlName="bookletSize">
+          <div class="card-text">
+            <div class="title-row">
+              <strong class="title">60 Pages (Jumbo)</strong>
+              <span class="fee-tag">+ ₹500 additional</span>
+            </div>
+            <span class="desc">Recommended for frequent international flyers needing extra visa stamp pages.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Action Navigation Buttons -->
+    <div class="form-actions">
+      <div></div> <!-- Spacer -->
+      <button type="button" class="btn-save-next" (click)="onNext()">
+        Save & Continue to Step 2 ➔
+      </button>
+    </div>
+  </form>
+</div>

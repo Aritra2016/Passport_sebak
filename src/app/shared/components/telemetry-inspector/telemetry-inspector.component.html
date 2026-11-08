@@ -1,0 +1,181 @@
+<div class="telemetry-drawer-root">
+  <!-- Minimized Floating Pill Button -->
+  <button 
+    type="button" 
+    class="telemetry-pill-btn" 
+    (click)="toggleExpand()"
+    [class.active]="telemetryService.isTrackingActive()"
+    [attr.aria-expanded]="isExpanded"
+    title="Click to view Console & Network Tab Telemetry Stream">
+    <span class="live-pulse" *ngIf="telemetryService.isTrackingActive()"></span>
+    <span class="pill-icon">📡</span>
+    <span class="pill-text">Telemetry Active</span>
+    <span class="pill-counter">
+      📝 {{ telemetryService.stats().valueChanges }} |
+      🖱️ {{ telemetryService.stats().mouseEvents }} |
+      ⌨️ {{ telemetryService.stats().keyboardEvents }} |
+      🌐 {{ telemetryService.stats().networkRequestsSent }} reqs
+    </span>
+    <span class="pill-toggle-icon">{{ isExpanded ? '▼' : '▲' }}</span>
+  </button>
+
+  <!-- Expanded Drawer Inspector Panel -->
+  <div class="telemetry-panel" *ngIf="isExpanded">
+    <!-- Header -->
+    <div class="panel-header">
+      <div class="panel-title-area">
+        <span class="panel-icon">📡</span>
+        <div>
+          <h4 class="panel-title">Console & Network Tab Telemetry Inspector</h4>
+          <span class="panel-subtitle">Capturing each console log, value change, mouse click & keyboard function to Network HTTP stream</span>
+        </div>
+      </div>
+      <div class="panel-header-actions">
+        <button 
+          type="button" 
+          class="btn-test-action" 
+          (click)="triggerTestSimulation()"
+          title="Fires 4 live test events to Console and Network tab">
+          🧪 Simulate Test Events
+        </button>
+        <button 
+          type="button" 
+          class="btn-control" 
+          (click)="telemetryService.toggleTracking()"
+          [class.paused]="!telemetryService.isTrackingActive()">
+          {{ telemetryService.isTrackingActive() ? '⏸ Pause' : '▶ Resume' }}
+        </button>
+        <button 
+          type="button" 
+          class="btn-control" 
+          (click)="telemetryService.clearEvents()" 
+          title="Clear Event Log">
+          🧹 Clear
+        </button>
+        <button 
+          type="button" 
+          class="btn-control" 
+          (click)="telemetryService.exportAuditTrailJson()" 
+          title="Download full JSON audit log">
+          💾 Export JSON
+        </button>
+        <button 
+          type="button" 
+          class="btn-close" 
+          (click)="toggleExpand()" 
+          title="Close Panel">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Stats Metric Ribbon -->
+    <div class="metrics-ribbon">
+      <div class="metric-card value-metric">
+        <span class="metric-label">📝 Value Changes</span>
+        <strong class="metric-value">{{ telemetryService.stats().valueChanges }}</strong>
+      </div>
+      <div class="metric-card mouse-metric">
+        <span class="metric-label">🖱️ Mouse Functions</span>
+        <strong class="metric-value">{{ telemetryService.stats().mouseEvents }}</strong>
+      </div>
+      <div class="metric-card key-metric">
+        <span class="metric-label">⌨️ Keyboard Functions</span>
+        <strong class="metric-value">{{ telemetryService.stats().keyboardEvents }}</strong>
+      </div>
+      <div class="metric-card console-metric">
+        <span class="metric-label">💻 Console Logs</span>
+        <strong class="metric-value">{{ telemetryService.stats().consoleLogs }}</strong>
+      </div>
+      <div class="metric-card network-metric">
+        <span class="metric-label">🌐 Network Requests (200 OK)</span>
+        <strong class="metric-value">{{ telemetryService.stats().networkRequestsSent }}</strong>
+      </div>
+    </div>
+
+    <!-- Category Filter Tabs -->
+    <div class="filter-tabs">
+      <button 
+        type="button" 
+        class="tab-btn" 
+        [class.active]="selectedCategory === 'ALL'" 
+        (click)="setCategory('ALL')">
+        All Events ({{ telemetryService.events().length }})
+      </button>
+      <button 
+        type="button" 
+        class="tab-btn" 
+        [class.active]="selectedCategory === 'VALUE'" 
+        (click)="setCategory('VALUE')">
+        📝 Value Changes
+      </button>
+      <button 
+        type="button" 
+        class="tab-btn" 
+        [class.active]="selectedCategory === 'MOUSE'" 
+        (click)="setCategory('MOUSE')">
+        🖱️ Mouse Functions
+      </button>
+      <button 
+        type="button" 
+        class="tab-btn" 
+        [class.active]="selectedCategory === 'KEYBOARD'" 
+        (click)="setCategory('KEYBOARD')">
+        ⌨️ Keyboard Functions
+      </button>
+      <button 
+        type="button" 
+        class="tab-btn" 
+        [class.active]="selectedCategory === 'CONSOLE'" 
+        (click)="setCategory('CONSOLE')">
+        💻 Console Logs
+      </button>
+    </div>
+
+    <!-- Live Event Feed Table / List -->
+    <div class="event-stream-container">
+      <div *ngIf="filteredEvents.length === 0" class="empty-state">
+        <span>No telemetry events recorded for this category yet.</span>
+        <p>Type in any input, click any button, or click "🧪 Simulate Test Events" above!</p>
+      </div>
+
+      <div 
+        *ngFor="let item of filteredEvents" 
+        class="event-row" 
+        [class.selected]="selectedEvent?.id === item.id"
+        (click)="selectEvent(item)">
+
+        <span class="event-badge" [attr.data-cat]="item.category">
+          {{ item.category }}
+        </span>
+
+        <span class="event-time">
+          {{ item.timestamp | date:'HH:mm:ss.SSS' }}
+        </span>
+
+        <span class="event-summary">
+          {{ item.summary }}
+        </span>
+
+        <span class="network-badge" [class.success]="item.networkStatus === 'SUCCESS_200'">
+          🌐 POST {{ item.networkStatus === 'SUCCESS_200' ? '200 OK' : 'PENDING' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Selected Event Details Drawer -->
+    <div class="event-details-preview" *ngIf="selectedEvent">
+      <div class="preview-header">
+        <strong>Event Details: {{ selectedEvent.id }}</strong>
+        <span class="preview-url">Route: {{ selectedEvent.url }}</span>
+      </div>
+      <pre class="json-code">{{ selectedEvent.details | json }}</pre>
+    </div>
+
+    <!-- DevTools Tip Footer -->
+    <div class="panel-footer">
+      <span>💡 <strong>DevTools Inspection:</strong> Open the <strong>Network</strong> tab (filter by <code>Fetch/XHR</code>) to inspect each individual HTTP request payload and 200 OK response for all mouse clicks, keyboard functions, and value changes!</span>
+    </div>
+  </div>
+</div>
+

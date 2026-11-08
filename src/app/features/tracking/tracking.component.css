@@ -1,0 +1,421 @@
+.tracking-page {
+      padding: 24px 16px;
+      min-height: calc(100vh - 200px);
+      background: var(--bg-body);
+    }
+
+    .tracking-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      margin-bottom: 20px;
+    }
+
+    .sub-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--saffron-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .page-header h2 {
+      font-size: 22px;
+      color: var(--navy-primary);
+      margin: 4px 0;
+      font-weight: 800;
+    }
+
+    .page-header p {
+      font-size: 13.5px;
+      color: #64748b;
+      margin: 0;
+    }
+
+    .search-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .search-form-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr auto;
+      gap: 16px;
+      align-items: flex-end;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .req { color: #dc2626; }
+
+    .form-control {
+      padding: 9px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13.5px;
+    }
+
+    .btn-track-submit {
+      background: var(--navy-primary);
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .btn-track-submit:hover {
+      background: #0f2942;
+    }
+
+    .quick-apps-bar {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .quick-label {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .chips-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .arn-chip {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 11.5px;
+      font-family: monospace;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .arn-chip.active, .arn-chip:hover {
+      background: #e0f2fe;
+      border-color: #0284c7;
+      color: #0284c7;
+    }
+
+    .application-summary-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .summary-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .summary-arn {
+      font-family: monospace;
+      font-weight: 800;
+      color: #0284c7;
+      font-size: 13px;
+    }
+
+    .applicant-name {
+      margin: 2px 0 4px 0;
+      font-size: 18px;
+      color: #0f172a;
+    }
+
+    .summary-sub {
+      margin: 0;
+      font-size: 12.5px;
+      color: #64748b;
+    }
+
+    .current-stage-tag {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .dispatch-banner {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      padding: 12px 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .speed-post-icon {
+      font-size: 28px;
+    }
+
+    .dispatch-info {
+      flex: 1;
+    }
+
+    .dispatch-info strong {
+      font-size: 13.5px;
+      color: #166534;
+      display: block;
+    }
+
+    .dispatch-info p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: #15803d;
+    }
+
+    .tracking-no {
+      font-family: monospace;
+      font-size: 13.5px;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-speed-post-track {
+      background: #16a34a;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .simulator-strip {
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 16px;
+      padding-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .sim-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    .sim-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .sim-btn {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .sim-btn.active {
+      background: var(--navy-primary);
+      color: #ffffff;
+      border-color: var(--navy-primary);
+    }
+
+    /* Pipeline Timeline */
+    .pipeline-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .pipeline-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin: 0 0 24px 0;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+
+    .stages-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .timeline-stage {
+      display: flex;
+      position: relative;
+      padding-bottom: 28px;
+    }
+
+    .timeline-stage:last-child {
+      padding-bottom: 0;
+    }
+
+    .stage-connector {
+      position: absolute;
+      top: 36px;
+      left: 17px;
+      width: 2px;
+      bottom: 0;
+      background: #e2e8f0;
+    }
+
+    .timeline-stage.completed .stage-connector {
+      background: #16a34a;
+    }
+
+    .stage-marker {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: #64748b;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .timeline-stage.completed .stage-marker {
+      background: #16a34a;
+      border-color: #16a34a;
+      color: #ffffff;
+      font-size: 16px;
+    }
+
+    .timeline-stage.current .stage-marker {
+      background: var(--navy-primary);
+      border-color: var(--navy-primary);
+      color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(26, 54, 93, 0.2);
+    }
+
+    .stage-details {
+      margin-left: 18px;
+      flex: 1;
+    }
+
+    .stage-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stage-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    .stage-status-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .timeline-stage.completed .stage-status-badge {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .timeline-stage.current .stage-status-badge {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .timeline-stage.pending .stage-status-badge {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+
+    .stage-date {
+      font-size: 11.5px;
+      color: #64748b;
+      margin: 2px 0 4px 0;
+    }
+
+    .stage-desc {
+      font-size: 12.5px;
+      color: #475569;
+      margin: 2px 0 0;
+      line-height: 1.4;
+    }
+
+    .officer-remarks-box {
+      background: #f8fafc;
+      border-left: 3px solid #3b82f6;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      color: #1e3a8a;
+      margin-top: 6px;
+    }
+
+    .empty-track-box {
+      text-align: center;
+      padding: 48px 16px;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px dashed #cbd5e1;
+    }
+
+    .empty-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 680px) {
+      .search-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }

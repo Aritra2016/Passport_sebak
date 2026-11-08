@@ -1,0 +1,189 @@
+.portal-footer {
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 13px;
+      margin-top: 48px;
+    }
+
+    .footer-top {
+      padding: 40px 16px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .footer-container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .footer-top .footer-container {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 32px;
+    }
+
+    .gov-title {
+      color: #f8fafc;
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 2px 0;
+    }
+
+    .gov-sub {
+      color: #94a3b8;
+      font-size: 12px;
+      margin: 0;
+    }
+
+    .emblem-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .emblem-symbol {
+      font-size: 32px;
+    }
+
+    .helpline-card {
+      background: #1e293b;
+      border-left: 4px solid var(--saffron-primary);
+      padding: 12px 16px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .call-icon {
+      font-size: 24px;
+    }
+
+    .helpline-label {
+      display: block;
+      font-size: 11px;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .helpline-number {
+      display: block;
+      font-size: 18px;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: 0.5px;
+    }
+
+    .helpline-timing {
+      display: block;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .col-title {
+      color: #f1f5f9;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0 0 16px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .footer-links li a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links li a:hover {
+      color: #38bdf8;
+      text-decoration: underline;
+    }
+
+    .initiatives-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .gov-badge-box {
+      background: #1e293b;
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #334155;
+    }
+
+    .badge-accent {
+      font-weight: 700;
+      color: #38bdf8;
+      font-size: 13px;
+    }
+
+    .badge-sub {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .footer-bottom {
+      padding: 18px 16px;
+      background: #090d16;
+    }
+
+    .bottom-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .legal-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .legal-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .legal-links a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .copyright-text {
+      margin: 0;
+      font-size: 11.5px;
+      color: #64748b;
+    }
+
+    @media (max-width: 900px) {
+      .footer-top .footer-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .footer-top .footer-container {
+        grid-template-columns: 1fr;
+      }
+      .bottom-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }

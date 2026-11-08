@@ -1,0 +1,66 @@
+<div class="portal-root">
+      <!-- Official Header Navigation -->
+      <app-navbar></app-navbar>
+
+      <!-- Global Loading Spinner Overlay -->
+      <div *ngIf="notify.isLoading()" class="global-loading-overlay" role="alert" aria-busy="true">
+        <div class="loading-box">
+          <div class="spinner"></div>
+          <span>Connecting to Government Gateway...</span>
+        </div>
+      </div>
+
+      <!-- Toast Notifications Container -->
+      <div class="toast-container" aria-live="polite" aria-atomic="true">
+        <div 
+          *ngFor="let toast of notify.toasts()" 
+          class="toast-card" 
+          [ngClass]="'toast-' + toast.type"
+          role="alert">
+          
+          <div class="toast-icon">
+            <span *ngIf="toast.type === 'success'">✓</span>
+            <span *ngIf="toast.type === 'error'">✕</span>
+            <span *ngIf="toast.type === 'warning'">⚠️</span>
+            <span *ngIf="toast.type === 'info'">ℹ️</span>
+          </div>
+
+          <div class="toast-content">
+            <strong *ngIf="toast.title" class="toast-title">{{ toast.title }}</strong>
+            <p class="toast-message">{{ toast.message }}</p>
+          </div>
+
+          <button type="button" class="btn-toast-dismiss" (click)="notify.dismiss(toast.id)" aria-label="Close notification">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Authenticated Child Viewport -->
+      <main class="portal-main-content" id="main-content">
+        <router-outlet></router-outlet>
+      </main>
+
+      <!-- Session Inactivity Timeout Modal -->
+      <div *ngIf="sessionService.showWarning()" class="session-modal-backdrop" role="dialog" aria-modal="true">
+        <div class="session-modal-card">
+          <div class="session-icon">⏳</div>
+          <h3>Session Inactivity Warning</h3>
+          <p>
+            For security compliance with Government of India portal guidelines, your session will automatically terminate in 
+            <strong>{{ sessionService.sessionRemainingSeconds() }} seconds</strong> due to inactivity.
+          </p>
+          <div class="session-modal-actions">
+            <button type="button" class="btn-extend-session" (click)="extendSession()">
+              Extend My Session
+            </button>
+            <button type="button" class="btn-logout-session" (click)="authService.logout()">
+              Log Out Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Official Footer -->
+      <app-footer></app-footer>
+    </div>

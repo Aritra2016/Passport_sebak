@@ -1,0 +1,202 @@
+<div class="payment-page" id="main-content">
+      <div class="payment-container">
+        <!-- Page Title -->
+        <div class="page-header">
+          <span class="sub-title">Fee Calculation & Online Payment Bridge</span>
+          <h2>Statutory Passport Application Fee Payment</h2>
+          <p>Pay government passport fees through official national payment gateways. Secured with 256-bit SSL encryption.</p>
+        </div>
+
+        <!-- 10-Min Slot Hold Banner if Active -->
+        <div *ngIf="stateService.isSlotHeld() && stateService.activeSlotHold() as held" class="slot-hold-indicator">
+          <span>⏱️ Reserved Slot at <strong>{{ held.pskName }}</strong> on <strong>{{ held.appointmentDate }} ({{ held.appointmentTime }})</strong></span>
+          <span class="timer-badge">{{ stateService.formattedSlotTimer() }} left to pay</span>
+        </div>
+
+        <div class="payment-layout">
+          <!-- Left: Fee Breakdown & Calculations -->
+          <div class="fee-breakdown-card">
+            <h3 class="card-title">Passport Fee Calculation Breakdown</h3>
+
+            <div class="arn-row">
+              <span class="arn-label">Application Reference:</span>
+              <span class="arn-value">{{ application?.arn }}</span>
+            </div>
+
+            <div class="fee-items-list">
+              <div class="fee-row">
+                <div class="fee-desc">
+                  <strong>Base Passport Application Fee</strong>
+                  <small>{{ application?.serviceType?.applicationType }} Passport (10-Year Validity)</small>
+                </div>
+                <span class="fee-amount">₹ 1,500</span>
+              </div>
+
+              <div class="fee-row" *ngIf="application?.serviceType?.schemeType === 'TATKAAL'">
+                <div class="fee-desc">
+                  <strong class="text-tatkaal">Tatkaal Expedited Scheme Surcharge</strong>
+                  <small>Priority verification & dispatch within 1-3 working days</small>
+                </div>
+                <span class="fee-amount text-tatkaal">+ ₹ 2,000</span>
+              </div>
+
+              <div class="fee-row" *ngIf="application?.serviceType?.bookletSize === '60_PAGES'">
+                <div class="fee-desc">
+                  <strong>60-Pages Jumbo Booklet Fee</strong>
+                  <small>Extra 24 pages for frequent travelers</small>
+                </div>
+                <span class="fee-amount">+ ₹ 500</span>
+              </div>
+
+              <div class="fee-row sms-row">
+                <label class="sms-label">
+                  <input type="checkbox" [(ngModel)]="optSmsService">
+                  <div class="sms-desc">
+                    <strong>Premium SMS Alert Service</strong>
+                    <small>Get SMS alerts at every processing & dispatch stage</small>
+                  </div>
+                </label>
+                <span class="fee-amount">+ ₹ 50</span>
+              </div>
+            </div>
+
+            <!-- Total Fee Banner -->
+            <div class="total-fee-banner">
+              <div>
+                <span class="total-label">Total Fee Payable (INR):</span>
+                <span class="total-sub">All taxes & statutory levies included</span>
+              </div>
+              <div class="total-val">₹ {{ calculateTotal() }}</div>
+            </div>
+          </div>
+
+          <!-- Right: Gateway Selection & Checkout Trigger -->
+          <div class="gateway-card">
+            <h3 class="card-title">Select Payment Gateway</h3>
+
+            <div class="gateways-grid">
+              <!-- SBI ePay -->
+              <label class="gateway-option" [class.selected]="selectedGateway === 'SBI_EPAY'">
+                <input type="radio" value="SBI_EPAY" [(ngModel)]="selectedGateway">
+                <div class="gw-content">
+                  <div class="gw-badge">GOVERNMENT PARTNER</div>
+                  <strong>SBI ePay Gateway</strong>
+                  <small>Zero surcharge on Rupay Cards, UPI & SBI NetBanking</small>
+                </div>
+              </label>
+
+              <!-- PayU -->
+              <label class="gateway-option" [class.selected]="selectedGateway === 'PAYU'">
+                <input type="radio" value="PAYU" [(ngModel)]="selectedGateway">
+                <div class="gw-content">
+                  <strong>PayU Payments India</strong>
+                  <small>Instant UPI QR, Credit Cards, NetBanking</small>
+                </div>
+              </label>
+
+              <!-- Razorpay -->
+              <label class="gateway-option" [class.selected]="selectedGateway === 'RAZORPAY'">
+                <input type="radio" value="RAZORPAY" [(ngModel)]="selectedGateway">
+                <div class="gw-content">
+                  <strong>Razorpay Official</strong>
+                  <small>All Indian Banks & UPI Wallets</small>
+                </div>
+              </label>
+            </div>
+
+            <h4 class="mode-title">Payment Method:</h4>
+            <div class="payment-modes">
+              <label class="mode-chip" [class.active]="selectedMode === 'UPI'">
+                <input type="radio" value="UPI" [(ngModel)]="selectedMode"> 📱 UPI (GPay / PhonePe / Paytm / BHIM)
+              </label>
+              <label class="mode-chip" [class.active]="selectedMode === 'NET_BANKING'">
+                <input type="radio" value="NET_BANKING" [(ngModel)]="selectedMode"> 🏦 Internet Banking (All Banks)
+              </label>
+              <label class="mode-chip" [class.active]="selectedMode === 'CARD'">
+                <input type="radio" value="CARD" [(ngModel)]="selectedMode"> 💳 Debit / Credit Card
+              </label>
+            </div>
+
+            <!-- Pay Now Button -->
+            <button type="button" class="btn-pay-now" (click)="openPaymentBridge()">
+              🔒 Pay ₹ {{ calculateTotal() }} via {{ getGatewayName() }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Gateway Processing Modal Simulator -->
+      <div *ngIf="showGatewayModal" class="gateway-modal-backdrop" role="dialog" aria-modal="true">
+        <div class="gateway-modal">
+          <div class="gw-header">
+            <span class="gw-brand-title">🔒 {{ getGatewayName() }} SECURE CHECKOUT</span>
+            <span class="gw-ssl">256-BIT SSL ENCRYPTED</span>
+          </div>
+
+          <div class="gw-body">
+            <div *ngIf="paymentProcessingStage === 'INPUT'">
+              <div class="gw-amount-box">
+                <span>Amount:</span>
+                <h2>₹ {{ calculateTotal() }}</h2>
+                <small>Merchant: CPV Division, Ministry of External Affairs</small>
+              </div>
+
+              <!-- UPI / Card Details Input Simulation -->
+              <div class="gw-input-box" *ngIf="selectedMode === 'UPI'">
+                <label>Enter Virtual Payment Address (VPA / UPI ID):</label>
+                <div class="vpa-input-group">
+                  <input type="text" class="form-control" [(ngModel)]="upiVpa" placeholder="username@okhdfcbank">
+                  <button type="button" class="btn-demo-vpa" (click)="upiVpa = 'citizen@okaxis'">Auto-fill</button>
+                </div>
+              </div>
+
+              <div class="gw-input-box" *ngIf="selectedMode === 'CARD'">
+                <label>Card Number (16 Digits):</label>
+                <input type="text" class="form-control" value="4532 8901 2345 6789" readonly>
+                <div class="card-meta mt-2">
+                  <input type="text" class="form-control" value="12/29" readonly>
+                  <input type="password" class="form-control" value="892" readonly>
+                </div>
+              </div>
+
+              <div class="gw-input-box" *ngIf="selectedMode === 'NET_BANKING'">
+                <label>Selected Bank:</label>
+                <select class="form-control">
+                  <option>State Bank of India (SBI)</option>
+                  <option>HDFC Bank</option>
+                  <option>ICICI Bank</option>
+                  <option>Punjab National Bank</option>
+                </select>
+              </div>
+
+              <div class="gw-actions mt-4">
+                <button type="button" class="btn-confirm-pay" (click)="processPayment()">
+                  Simulate Successful Payment
+                </button>
+                <button type="button" class="btn-cancel-pay" (click)="showGatewayModal = false">
+                  Cancel Transaction
+                </button>
+              </div>
+            </div>
+
+            <!-- Processing Spinner -->
+            <div *ngIf="paymentProcessingStage === 'PROCESSING'" class="processing-box">
+              <div class="spinner"></div>
+              <h4>Connecting to Bank Payment Gateway...</h4>
+              <p>Authenticating credentials and verifying transaction with Reserve Bank of India gateway. Do not refresh.</p>
+            </div>
+
+            <!-- Success Confirmation -->
+            <div *ngIf="paymentProcessingStage === 'SUCCESS'" class="success-box">
+              <div class="check-circle">✓</div>
+              <h3>Payment of ₹ {{ calculateTotal() }} Successful!</h3>
+              <p>Transaction ID: <strong>{{ lastTransactionId }}</strong></p>
+              <p>Your appointment has been officially confirmed and Application Reference Number (ARN) e-Receipt is generated.</p>
+              <button type="button" class="btn-view-receipt" (click)="goToReceipt()">
+                View & Print Official ARN Receipt ➔
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

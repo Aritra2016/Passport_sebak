@@ -1,0 +1,335 @@
+.portal-header {
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .top-gov-bar {
+      background: #111827;
+      color: #f1f5f9;
+      font-size: 11.5px;
+      padding: 4px 16px;
+    }
+
+    .gov-bar-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .gov-branding {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    .bar-separator {
+      color: #64748b;
+    }
+
+    .gov-tools {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .skip-link {
+      color: #93c5fd;
+      text-decoration: underline;
+      font-size: 11px;
+    }
+
+    .font-resizer {
+      display: inline-flex;
+      background: #1f2937;
+      border-radius: 4px;
+      border: 1px solid #374151;
+      overflow: hidden;
+    }
+
+    .font-resizer button {
+      background: none;
+      border: none;
+      color: #f3f4f6;
+      padding: 2px 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border-right: 1px solid #374151;
+    }
+
+    .font-resizer button:last-child {
+      border-right: none;
+    }
+
+    .font-resizer button:hover {
+      background: #374151;
+    }
+
+    .contrast-toggle-btn {
+      background: #1e3a8a;
+      color: #ffffff;
+      border: 1px solid #3b82f6;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .lang-pill {
+      background: #374151;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    .tricolor-strip {
+      height: 4px;
+      display: flex;
+      width: 100%;
+    }
+
+    .tri-saffron { flex: 1; background: #ff9933; }
+    .tri-white { flex: 1; background: #ffffff; }
+    .tri-green { flex: 1; background: #138808; }
+
+    .main-nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ashoka-emblem {
+      color: var(--navy-primary);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .portal-title {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .title-primary {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy-primary);
+      letter-spacing: -0.3px;
+    }
+
+    .title-hindi {
+      font-size: 17px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .portal-sub {
+      font-size: 11.5px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .role-switcher-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .role-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .role-select {
+      background: #ffffff;
+      border: 1px solid #94a3b8;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #0f172a;
+      padding: 3px 6px;
+      cursor: pointer;
+    }
+
+    .slot-timer-badge {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      animation: pulseGlow 1.5s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .user-role-tag {
+      font-size: 10.5px;
+      color: #047857;
+      font-weight: 600;
+    }
+
+    .btn-logout {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #dc2626;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-logout:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+    }
+
+    .nav-links-bar {
+      background: var(--navy-primary);
+      color: #ffffff;
+      padding: 0 16px;
+    }
+
+    .nav-links-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      gap: 2px;
+      overflow-x: auto;
+    }
+
+    .nav-list li a {
+      display: block;
+      color: #e2e8f0;
+      text-decoration: none;
+      padding: 11px 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+    }
+
+    .nav-list li a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+
+    .nav-list li a.active {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border-bottom-color: var(--saffron-primary);
+    }
+
+    .session-indicator {
+      font-size: 11.5px;
+      color: #cbd5e1;
+      font-family: monospace;
+      padding: 4px 8px;
+    }
+
+    @media (max-width: 768px) {
+      .main-nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
+    .env-banner-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-left: 8px;
+      text-transform: uppercase;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .env-mini-pill {
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+      letter-spacing: 0.5px;
+    }
